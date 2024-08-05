@@ -1,0 +1,485 @@
+#ifndef TITLESCREEN_H
+#define TITLESCREEN_H
+
+#include "string.h"
+#include "input.h"
+#include "Common.h"
+#include "TitleScreen.h"
+#include "Vec2F.h"
+#include "SDL_HelperTypes.h"
+#include "libs/TextFonts/textfont.h"
+#include "CAudio.h"
+
+int SelectedMenu = 0;
+int CurrentMainMenu = -1;
+int SelMenu = 0;
+int SelOptions = 0;
+
+int menutextsize = (int)(60.0*yscale);
+int menuspacing = (int)(90.0*yscale);
+int rcolor = 64;
+int rdcolor = 1;
+
+void ResetGlobalsTitleScreen()
+{
+	SelectedMenu = 0;
+	CurrentMainMenu = -1;
+	SelMenu = 0;
+	SelOptions = 0;	
+}
+
+void InitTitleScreen()
+{
+	CAudio_PlayMusic(MusMenu, -1);
+	CGame_StartCrossFade(GameState, SGNone, 0, 0);
+}
+
+void TitleScreen()
+{
+	if(GameState == GSTitleScreenInit)
+	{
+		InitTitleScreen();
+		GameState -= initDiff;
+	}
+
+	CGame_DrawTitleBackground();
+
+	SDL_Point FramePos = {ScreenWidth / 2, ScreenHeight / 2};
+	Vec2F FrameScale = {2.5 * xscale, 7.6 *yscale};
+	CImage_DrawImageFuze(GFXFrameID, 0, true, FramePos.x , FramePos.y, 0, FrameScale.x, FrameScale.y, 1.0, 1.0, 1.0, 1.0);
+
+	int color = color_white;
+	int[1000] Text;
+	int[10] Nr;
+	int* PText;
+	switch (CurrentMainMenu)
+	{
+		case MMOptions:
+		{
+			int selectedmenu = 0;
+
+			selectedmenu = OMOptionMenus[SelOptions].menu;
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Options");
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text),(int)(525.0*xscale), (int)(50.0*yscale), 0, color);
+			int menu;
+
+			for(int i = 0; i < OptionMenus; i++)
+			{
+				menu = OMOptionMenus[i].menu;
+				if (menu == selectedmenu)
+					color = color_white;
+				else
+					color = color_gray;
+
+				switch(menu)
+				{
+					case OMSoundVol:
+						PText = Text; *PText = 0; PText = faststrcat(PText, OMOptionMenus[menu].name);
+						itoa((int)(CAudio_GetVolumeSound()*100/128), Nr, 10);
+						PText = faststrcat(PText, Nr);
+						PText = faststrcat(PText, "%");
+						CFont_WriteText("Roboto-Regular", menutextsize, Text, strlen(Text), (int)(300.0*xscale), (int)(185.0*yscale + i * menuspacing), 0, color);
+						break;
+					case OMMusicVol:
+						PText = Text; *PText = 0; PText = faststrcat(PText, OMOptionMenus[menu].name);
+						itoa((int)(CAudio_GetVolumeMusic()*100/128), Nr, 10);
+						PText = faststrcat(PText, Nr);
+						PText = faststrcat(PText, "%");
+						CFont_WriteText("Roboto-Regular", menutextsize, Text, strlen(Text), (int)(300.0*xscale), (int)(185.0*yscale + i * menuspacing), 0, color);
+						break;
+					default:
+						CFont_WriteText("Roboto-Regular", menutextsize, OMOptionMenus[menu].name, strlen(OMOptionMenus[menu].name),(int) (300.0*xscale),
+							(int)(185.0*yscale + i * menuspacing), 0, color);
+						break;
+				}
+			}
+			color = color_white;
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Use dpad to switch between options. (A) to select and (B) for back");
+			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text), (int)(90.0*xscale), (int)(630.0*yscale), 0, color);
+			
+			if (gamepad_down() == 1)
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+				SelOptions += 1;
+				if (SelOptions == OptionMenus)
+					SelOptions = 0;
+			}
+
+			if (gamepad_up() == 1)
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+
+				SelOptions -= 1;
+				if( SelOptions == -1)
+					SelOptions = OptionMenus - 1;
+			}
+
+			if (gamepad_left() == 1)
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+				bool wasplaying;
+				switch (selectedmenu)
+				{
+					case OMSoundVol:
+						CAudio_DecVolumeSound();
+						break;
+
+					case OMMusicVol:
+						wasplaying = CAudio_IsMusicPlaying();
+						CAudio_DecVolumeMusic();
+						if (!wasplaying)
+							CAudio_PlayMusic(MusMenu, -1);
+						break;
+
+				}
+			}
+
+			if (gamepad_right() == 1)
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+				bool wasplaying;
+				switch (selectedmenu)
+				{
+					case OMSoundVol:
+						CAudio_IncVolumeSound();
+						break;
+
+					case OMMusicVol:
+						wasplaying = CAudio_IsMusicPlaying();
+						CAudio_IncVolumeMusic();
+						if (!wasplaying)
+							CAudio_PlayMusic(MusMenu, -1);
+						break;
+				}
+			}
+
+
+			if (gamepad_button_b() == 1)
+			{
+				CAudio_PlaySound(SfxBack, 0);
+				CGame_StartFade();
+				CurrentMainMenu = -1;
+				CGame_SaveSettings();
+			}
+
+			if ((gamepad_button_start() == 1) || (gamepad_button_a() == 1))
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+				bool wasplaying;
+				switch(selectedmenu)
+				{
+					case OMBack:
+						CurrentMainMenu = -1;
+						CGame_StartFade();
+						CGame_SaveSettings();
+						break;
+					case OMResetHighScores:
+						CGame_ResetHighScores();
+						CGame_SaveHighScores();
+						break;
+					case OMSoundVol:
+						CAudio_IncVolumeSound();
+						break;
+					case OMMusicVol:
+						wasplaying = CAudio_IsMusicPlaying();
+						CAudio_IncVolumeMusic();
+						if(!wasplaying)
+							CAudio_PlayMusic(MusMenu, -1);
+						break;
+				}
+			}
+			break;
+		}
+
+
+		case MMHelp:
+		{
+			PText = Text; *PText = 0; PText = faststrcat(PText,"Help");
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(560.0*xscale), (int)(50.0*yscale), 0, color);
+			
+
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Retro time is a collection of retro games, each playable in different\n"
+				"game modes.\n"
+				"\n"
+				"You can control players in games with the dpad. Extra actions are\n"
+				"available, using (A), depending on the game.\n"
+				"\n"
+				"During gameplay you can access the pause menu, by pressing\n"
+				"(B) button. Pressing it again will resume gameplay.\n"
+				"\n"
+				"There are 3 game modes: Retro Carousel, Time Attack and\n"
+				"Lives mode.");
+			int tw = CFont_TextWidth("Roboto-Regular", (int)(38.0*yscale), Text, strlen(Text));
+			CFont_WriteText("Roboto-Regular", (int)(38.0*yscale), Text, strlen(Text), (int)((ScreenWidth-tw)/2.0),(int)(140.0*yscale), 0, color);
+
+			if ((gamepad_button_a() == 1) || (gamepad_button_start() == 1) || (gamepad_button_b() == 1))
+			{
+				CAudio_PlaySound(SfxBack, 0);
+				CGame_StartFade();
+				CurrentMainMenu = -1;
+			}
+			break;
+		}
+		case MMCredits:
+		{
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Credits");
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(500.0*xscale),(int)(50.0*yscale), 0, color);
+
+			PText = Text; *PText = 0; PText = faststrcat(PText,
+			"Block Stacker code is heavily inspired on this video from one lone\n"
+			"coder (javidx9) with my own adaptations: https://youtu.be/8OK8_tHeCIA\n"
+	//		"\n"
+			"Snakey code is based on an edureka article (by Wajiha Urooj) about making\n"
+			"python snake: https://www.edureka.co/blog/snake-game-with-pygame\n"
+	//		"\n"
+			"Brick Breaker ball / block collision uses a detection seen in wireframe\n"
+			"magazine nr 11: https://wireframe.raspberrypi.org\n"
+	//		"\n"
+			"Toady water and grass background tiles have been created by me,\n"
+			"Willems Davy aka joyrider3774 feel free to use them. Music is\n"
+			"created, payed and owned by me using Strofe: https://www.strofe.com\n"
+	//		"\n"
+			"All other assets (including sound) come from either payed or free\n"
+			"asset packs. For a complete list check the github or itch.io page:\n"
+			"https://github.com/joyrider3774/RetroTime or\n"
+			"https://joyrider3774.itch.io/retrotime\n");
+
+			int tw = CFont_TextWidth("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text));
+			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text), (int)((ScreenWidth - tw) / 2.0), (int)(140.0*yscale), 0, color);			
+
+			if ((gamepad_button_a() == 1) || (gamepad_button_start() == 1) || (gamepad_button_b() == 1))
+			{
+				CAudio_PlaySound(SfxBack, 0);
+				CGame_StartFade();
+				CurrentMainMenu = -1;
+			}
+			break;
+		}
+		case MMHighScores:
+		{
+			PText = Text; *PText = 0; PText = faststrcat(PText,"High Scores");
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(400.0*xscale), (int)(50.0*yscale), 0, color);
+			
+
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Retro Carousel Total highscore: ");
+			itoa(RetroCarouselHighScore, Nr, 10);
+			PText = faststrcat(PText, Nr);
+			CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), Text, strlen(Text),(int)(150.0*xscale),(int)(195.0*yscale), 0, color);
+			
+			CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), GSGames[Game].name, strlen(GSGames[Game].name),(int)(150.0*xscale),(int)(290.0*yscale), 0, color);
+
+			CImage_DrawImageFuze(GFXPrevewID, Game, false, (int)(150.0*xscale), (int)(355.0*yscale), 0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+
+			for(int mode = 0; mode < Modes; mode++)
+			{
+				PText = Text; *PText = 0; PText = faststrcat(PText, GMModes[mode].name);
+				PText = faststrcat(PText,": ");
+				itoa(HighScores[Game][mode], Nr, 10);
+				PText = faststrcat(PText, Nr);
+				CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), Text, strlen(Text), (int)(500.0*xscale), (int)((350 + mode * 46)*yscale), 0, color);				
+			}
+
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Use dpad or (A) to switch between games. (B) for back");
+			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text), (int)(200.0*xscale),(int)(630.0*yscale), 0, color);
+			
+			 if (gamepad_button_b() == 1)
+			 {
+				CAudio_PlaySound(SfxBack, 0);
+				CGame_StartFade();
+				CurrentMainMenu = -1;
+			 }
+
+			if ((gamepad_button_a() == 1) || (gamepad_button_start() == 1) || (gamepad_right() == 1))
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+
+				Game += 1;
+				if (Game == Games)
+					Game = 0;
+			}
+
+			 if (gamepad_left() == 1)
+			 {
+				CAudio_PlaySound(SfxSelect, 0);
+
+				Game -= 1;
+				if (Game == -1)
+					Game = Games - 1;
+			 }
+			 break;
+		}
+		case MMSelectGame:
+		{
+			int gamestate = GSGames[Game].state;
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Select Game");
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(465.0*xscale), (int)(50.0*yscale), 0, color);
+			
+
+			PText = Text; *PText = 0; PText = faststrcat(PText, GSGames[Game].name);
+			CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), Text, strlen(Text), (int)(50.0*xscale), (int)(165.0*yscale), 0, color);
+			
+			CImage_DrawImageFuze(GFXPrevewID, Game, false, (int)(50.0*xscale), (int)(230.0*yscale), 0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+
+			PText = Text; *PText = 0; PText = faststrcat(PText, GMModes[GameMode].name);
+			PText = faststrcat(PText, " High Score: ");
+			itoa(HighScores[Game][GameMode], Nr, 10);
+			PText = faststrcat(PText, Nr);
+
+			CFont_WriteText("Roboto-Regular", (int)(40.0*yscale), Text, strlen(Text), (int)(400.0*xscale), (int)(170.0*yscale), 0, color);
+			
+			CFont_WriteText("Roboto-Regular", (int)(28.0*yscale), GSGames[Game].description, strlen(GSGames[Game].description), (int)(400.0*xscale), (int)(230.0*yscale), 2, color);
+
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Use dpad to switch between games. (A) to select and (B) for back");
+			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text), (int)(90.0*xscale), (int)(630.0*yscale), 0, color);
+			
+			if (gamepad_button_b() == 1)
+			{
+				CAudio_PlaySound(SfxBack, 0);
+				CurrentMainMenu = MMSelectGameMode;
+				CGame_StartFade();
+			}
+
+			if ((gamepad_button_start() == 1) || (gamepad_button_a() == 1))
+			{
+				CAudio_PlaySound(SfxConfirm, 0);
+				CGame_StartFade();
+				GameState = gamestate;
+				CGame_ResetScores();
+				CurrentMainMenu = -1;
+				//CInput_ResetButtons();
+			}
+
+			if (gamepad_left() == 1)
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+
+				Game -= 1;
+				if (Game == -1)
+					Game = Games - 1;
+			}
+			if (gamepad_right() == 1)
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+
+				Game += 1;
+				if (Game == Games)
+					Game = 0;
+			}
+			break;
+		}
+		case MMSelectGameMode:
+		{
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Select Game Mode");
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(285.0*xscale), (int)(50.0*yscale), 0, color);
+			
+			int ModeIterator;
+			for(int i = 0; i < Modes; i++)
+			{
+				ModeIterator = GMModes[i].mode;
+				if (ModeIterator == GameMode)
+					color = color_white;
+				else
+					color = color_gray;
+
+				CFont_WriteText("Roboto-Regular", menutextsize, GMModes[i].name, strlen(GMModes[i].name), (int)(470.0*xscale), (int)(135.0*yscale + i * menuspacing), 0, color);
+			}
+			color = color_white;
+
+			CFont_WriteText("Roboto-Regular", (int)(40.0*yscale), GMModes[GameMode].description, strlen(GMModes[GameMode].description),
+				(int)(90.0*xscale),(int)(400.0*yscale), 0, color);
+
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Use dpad to switch between game modes. (A) to select and (B) for back");
+			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text), (int)(90.0*xscale), (int)(630.0*yscale), 0, color);
+			
+			if (gamepad_down() == 1)
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+				GameMode += 1;
+				if (GameMode == Modes)
+					GameMode = 0;
+			}
+
+			if (gamepad_up() == 1)
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+
+				GameMode -= 1;
+				if (GameMode == -1)
+					GameMode = Modes - 1;
+			}
+
+			if (gamepad_button_b() == 1)
+			{
+				CAudio_PlaySound(SfxBack, 0);
+				CurrentMainMenu = -1;
+				CGame_StartFade();
+			}
+
+			if ((gamepad_button_start() == 1) || gamepad_button_a() == 1)
+			{
+				CAudio_PlaySound(SfxConfirm, 0);
+
+				if (GameMode == GMRetroCarousel)
+				{
+					Game = 0;
+					CGame_ResetScores();
+					CurrentMainMenu = -1;
+					GameState = GSGames[Game].state;
+				}
+				else
+					CurrentMainMenu = MMSelectGame;
+				CGame_StartFade();
+			}
+			break;
+		}
+		default:
+		{
+			SelMenu = MMMainMenus[SelectedMenu].menu;
+
+			PText = Text; *PText = 0; PText = faststrcat(PText, "Retro Time");
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(465.0*xscale), (int)(50.0*yscale), 0, color);
+			
+			int MenuIterator;
+			for (int i = 0; i < MainMenus; i++)
+			{
+				MenuIterator = MMMainMenus[i].menu;
+				if (MenuIterator == SelMenu)
+					color = color_white;
+				else
+					color = color_gray;
+				CFont_WriteText("Roboto-Regular", menutextsize, MMMainMenus[i].name, strlen(MMMainMenus[i].name), (int)(500.0*xscale), (int)(180.0*yscale + i * menuspacing), 0, color);
+			}
+			color = color_white;
+
+			if (gamepad_down() == 1)
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+				SelectedMenu += 1;
+				if (SelectedMenu == MainMenus)
+					SelectedMenu = 0;
+			}
+
+			if (gamepad_up() == 1)
+
+			{
+				CAudio_PlaySound(SfxSelect, 0);
+
+				SelectedMenu -= 1;
+				if(SelectedMenu == -1)
+					SelectedMenu = MainMenus - 1;
+			}
+
+			if ((gamepad_button_start() == 1) || (gamepad_button_a() == 1))
+			{
+				CGame_StartFade();
+				CurrentMainMenu = SelMenu;
+				CAudio_PlaySound(SfxConfirm, 0);
+
+				if (SelMenu == MMStart)
+					CurrentMainMenu = MMSelectGameMode;
+			}
+		}
+	}
+}
+
+#endif

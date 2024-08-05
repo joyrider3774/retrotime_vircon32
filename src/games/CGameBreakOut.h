@@ -13,14 +13,14 @@
 #include "../Common.h"
 #include "../Vec2F.h"
 
-#define CGameFrog_NumLogicFrames 2
+#define CGameBreakOut_NumLogicFrames 2
 #define CGameBreakOut_tweenblockpositions 0
 #define CGameBreakOut_tweenblockdeath 1
 #define CGameBreakOut_blockstatedeath 1
-#define CGameBreakOut_ballspeed (6.0*yscale*CGameFrog_NumLogicFrames)
-#define CGameBreakOut_ballspeedinc (0.1*yscale*CGameFrog_NumLogicFrames)
+#define CGameBreakOut_ballspeed (6.0*yscale*CGameBreakOut_NumLogicFrames)
+#define CGameBreakOut_ballspeedinc (0.1*yscale*CGameBreakOut_NumLogicFrames)
 #define CGameBreakOut_ballvelsegments 2
-#define CGameBreakOut_playerspeed (8.0*xscale*CGameFrog_NumLogicFrames)
+#define CGameBreakOut_playerspeed (8.0*xscale*CGameBreakOut_NumLogicFrames)
 #define CGameBreakOut_blockxoffset (120.0*xscale)
 #define CGameBreakOut_blockyoffset (80.0*yscale)
 #define CGameBreakOut_blockrows 8
@@ -122,7 +122,7 @@ void CGameBreakOut_createblocks(CGameBreakOut* GameBreakOut, bool setlocation)
 	{
 		for(int y = 0; y < CGameBreakOut_blockrows; y++)
 		{
-			setTweenInfo(GameBreakOut->tweens[x + y * CGameBreakOut_blockcols][CGameBreakOut_tweenblockpositions], CGameBreakOut_tweenblockpositions, 1.0+ ((rand() %(6)) / 10), funcsmoothstop, 1, true, 60/CGameFrog_NumLogicFrames);
+			setTweenInfo(GameBreakOut->tweens[x + y * CGameBreakOut_blockcols][CGameBreakOut_tweenblockpositions], CGameBreakOut_tweenblockpositions, 1.0+ ((rand() %(6)) / 10), funcsmoothstop, 1, true, 60/CGameBreakOut_NumLogicFrames);
 			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].spr = CSprites_CreateSprite();
 			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].state = 0;
 			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].alive = true;
@@ -412,7 +412,7 @@ void CGameBreakOut_updateball(CGameBreakOut* GameBreakOut)
 							CAudio_PlaySound(GameBreakOut->SfxBrick, 0);
 							GameBreakOut->blocks[k].state = CGameBreakOut_blockstatedeath;
 							CSprites_SetSpriteDepth(GameBreakOut->blocks[k].spr, 5);
-							setTweenInfo(GameBreakOut->tweens[k][CGameBreakOut_tweenblockdeath], CGameBreakOut_tweenblockdeath, 1, funcsmoothstep, 1, true, 60/CGameFrog_NumLogicFrames);
+							setTweenInfo(GameBreakOut->tweens[k][CGameBreakOut_tweenblockdeath], CGameBreakOut_tweenblockdeath, 1, funcsmoothstep, 1, true, 60/CGameBreakOut_NumLogicFrames);
 						}
 					}
 				}

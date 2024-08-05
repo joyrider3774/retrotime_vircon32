@@ -171,20 +171,18 @@ The game makes uses of multiple payed and free assets packs, below are the credi
 
 | Asset | Asset Pack | License |
 | ----- | --------- | -------- |
-| background.png | [Created by Vircon32 author using "cluster of stars" photo by Kai Pilger](https://www.pexels.com/photo/cluster-of-stars-1341279/) | [Pexels license - free to use](https://www.pexels.com/license/) |
 | Music.wav | Created and Owned by me on [Strofe](https://www.strofe.com/) |
 | hit.wav | [Game Music Stingers And UI SFX Pack 2 by wowsounds](https://www.gamedevmarket.net/asset/game-music-stingers-and-ui-sfx-pack-2/) | [Gamedev market pro-licence](https://static.gamedevmarket.net/terms-conditions/#pro-licence) |
 | shoot.wav | [Pro Sound Collection by gamemasteraudio](https://www.gamedevmarket.net/asset/pro-sound-collection/) | [Gamedev market pro-licence](https://static.gamedevmarket.net/terms-conditions/#pro-licence) |
-
+| background.png | [Created by Vircon32 author using "cluster of stars" photo by Kai Pilger](https://www.pexels.com/photo/cluster-of-stars-1341279/) | [Pexels license - free to use](https://www.pexels.com/license/) |
 
 ### Snakey
 
 | Asset | Asset Pack | License |
 | ----- | --------- | -------- |
-| background.png | [Created by Vircon32 author using "rattlesnake on ground" photo by Uriel Venegas](https://www.pexels.com/photo/rattlesnake-on-ground-18029251/) | [Pexels license - free to use
 | Music.wav | Created and Owned by me on [Strofe](https://www.strofe.com/) |
 | food.wav | [Pro Sound Collection by gamemasteraudio](https://www.gamedevmarket.net/asset/pro-sound-collection/) | [Gamedev market pro-licence](https://static.gamedevmarket.net/terms-conditions/#pro-licence) |
-
+| background.png | [Created by Vircon32 author using "rattlesnake on ground" photo by Uriel Venegas](https://www.pexels.com/photo/rattlesnake-on-ground-18029251/) | [Pexels license - free to use] |
 
 ### Invaders
 

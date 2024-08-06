@@ -10,7 +10,7 @@
 #include "../CGame.h"
 #include "../SDL_HelperTypes.h"
 
-
+#define CGameInvaders_candie 1
 #define CGameInvaders_tweenenemypositions 0
 #define CGameInvaders_tweenenemydeath 1
 
@@ -367,7 +367,7 @@ void CGameInvaders_updateenemybullet(CGameInvaders* GameInvaders)
 
 			if (GameInvaders->enemybullets[i].alive && GameInvaders->player.alive)
 			{
-				if (CSprites_DetectSpriteCollision(GameInvaders->enemybullets[i].spr, GameInvaders->player.spr))
+				if (CSprites_DetectSpriteCollision(GameInvaders->enemybullets[i].spr, GameInvaders->player.spr) && CGameInvaders_candie)
 				{
 					GameInvaders->player.alive = false;
 					GameInvaders->player.freeze = 30;

@@ -15,10 +15,13 @@ int[MAXDEBUGSPEEDS] DebugSpeedValues;
 int[MAXDEBUGSPEEDS] DebugSpeedCycles;
 int[MAXDEBUGSPEEDS] DebugSpeedFrames;
 int[MAXDEBUGSPEEDS] DebugSpeedsPrevLenText;
+float[MAXDEBUGSPEEDS] DebugSpeedRunningAvg;
+int[MAXDEBUGSPEEDS] DebugSpeedRunningAvgCount;
 
 int[MAXDEBUGSPEEDS] DebugSpeedGPUMaxValues;
 int[MAXDEBUGSPEEDS] DebugSpeedGPUValues;
 int[MAXDEBUGSPEEDS] DebugSpeedsGPUPrevLenText;
+float[MAXDEBUGSPEEDS] DebugSpeedGPURunningAvg;
 
 int MemoryUsed()
 {
@@ -65,21 +68,30 @@ int* _faststrcat( int* dest, int* src )
 }
 
 
-void _printSpeedInternal(int DebugSpeedValue, int DebugSpeedMaxValue, int* DebugSpeedMaxTextLengthArrayItem, int percentageValue, int percentageMultiplyer, int Percentagedivisor, int percentageMaxValue, int percentageMaxMultiplyer, int PercentageMaxdivisor, int Nr, int x, int y, int* prefix, int* internalprefix)
+void _printSpeedInternal(int DebugSpeedValue, int DebugSpeedMaxValue, float DebugSpeedAvgValue, int DebugSpeedAvgCount, int* DebugSpeedMaxTextLengthArrayItem, int percentageMultiplyer, int Percentagedivisor, int Nr, int x, int y, int* prefix, int* internalprefix, float avgmultiply)
 {
-	int[10] debugNr;
+	int[20] debugNr;
 	int[100] Msg;
 	int* PMsg;
 	if(USEPERCENTAGES)
-		itoa(percentageMaxValue * percentageMaxMultiplyer /PercentageMaxdivisor, debugNr, 10);
+		itoa(DebugSpeedMaxValue * percentageMultiplyer /Percentagedivisor, debugNr, 10);
 	else
 		itoa(DebugSpeedMaxValue, debugNr, 10);
 	PMsg = Msg; *PMsg = 0; PMsg = _faststrcat(PMsg, prefix);
 	PMsg = _faststrcat(PMsg, internalprefix);
 	PMsg = _faststrcat(PMsg, debugNr);
 	PMsg = _faststrcat(PMsg, "/");
+	debugNr[0] = '0';
+	debugNr[1] = 0;
+	if(DebugSpeedAvgCount > 0)
+		if(USEPERCENTAGES)
+			ftoa((DebugSpeedAvgValue / DebugSpeedAvgCount) * avgmultiply * percentageMultiplyer /Percentagedivisor, debugNr);
+		else
+			ftoa((DebugSpeedAvgValue / DebugSpeedAvgCount) * avgmultiply, debugNr);
+	PMsg = _faststrcat(PMsg, debugNr);
+	PMsg = _faststrcat(PMsg, "/");
 	if(USEPERCENTAGES)
-		itoa(percentageValue * percentageMultiplyer /Percentagedivisor, debugNr, 10);
+		itoa(DebugSpeedValue * percentageMultiplyer /Percentagedivisor, debugNr, 10);
 	else
 		itoa(DebugSpeedValue, debugNr, 10);
 	PMsg = _faststrcat(PMsg, debugNr);
@@ -98,14 +110,14 @@ void _printSpeedInternal(int DebugSpeedValue, int DebugSpeedMaxValue, int* Debug
 	}
 }
 
-void printDebugSpeed(int Nr, int x, int y, int* prefix)
+void printDebugSpeed(int Nr, int x, int y, int* prefix, float avgmultiply)
 {
 	if(!MAXDEBUGSPEEDSENABLED)
 		return;
 	if(Nr < MAXDEBUGSPEEDS)
 	{
-		_printSpeedInternal(DebugSpeedValues[Nr], DebugSpeedMaxValues[Nr], &DebugSpeedsPrevLenText[Nr], DebugSpeedValues[Nr], 100, 250000, DebugSpeedMaxValues[Nr], 100, 250000, Nr, x, y, prefix, "CPU:");
-		_printSpeedInternal(DebugSpeedGPUValues[Nr], DebugSpeedGPUMaxValues[Nr], &DebugSpeedsGPUPrevLenText[Nr], DebugSpeedGPUValues[Nr],100, (9 * 640 * 360) , DebugSpeedGPUMaxValues[Nr], 100,  (9 * 640 * 360), Nr, x, y+bios_character_height, prefix, "GPU:");
+		_printSpeedInternal(DebugSpeedValues[Nr], DebugSpeedMaxValues[Nr], DebugSpeedRunningAvg[Nr], DebugSpeedRunningAvgCount[Nr], &DebugSpeedsPrevLenText[Nr],  100, 250000,  Nr, x, y, prefix, "CPU:", avgmultiply);
+		_printSpeedInternal(DebugSpeedGPUValues[Nr], DebugSpeedGPUMaxValues[Nr], DebugSpeedGPURunningAvg[Nr], DebugSpeedRunningAvgCount[Nr], &DebugSpeedsGPUPrevLenText[Nr], 100, (9 * 640 * 360), Nr, x, y+bios_character_height, prefix, "GPU:", avgmultiply);
 	}
 }
 
@@ -118,6 +130,9 @@ void initDebugSpeed()
 		DebugSpeedValues[i] = 0;
 		DebugSpeedFrames[i] = 0;
 		DebugSpeedsPrevLenText[i] = 0;
+		DebugSpeedRunningAvg[i] = 0;
+		DebugSpeedRunningAvgCount[i] = 0;
+		DebugSpeedGPURunningAvg[i] = 0;
 	}
 }
 
@@ -156,7 +171,11 @@ void StopDebugSpeed(int Nr)
 		if(DebugSpeedValues[Nr] > DebugSpeedMaxValues[Nr])
 			DebugSpeedMaxValues[Nr] = DebugSpeedValues[Nr];		
 		if(DebugSpeedGPUValues[Nr] > DebugSpeedGPUMaxValues[Nr])
-			DebugSpeedGPUMaxValues[Nr] = DebugSpeedGPUValues[Nr];		
+			DebugSpeedGPUMaxValues[Nr] = DebugSpeedGPUValues[Nr];
+		DebugSpeedRunningAvgCount[Nr] = DebugSpeedRunningAvgCount[Nr] + 1;
+		DebugSpeedGPURunningAvg[Nr] = (DebugSpeedGPURunningAvg[Nr] + DebugSpeedGPUValues[Nr]);
+		DebugSpeedRunningAvg[Nr] = (DebugSpeedRunningAvg[Nr] + DebugSpeedValues[Nr]);
+		
 	}
 }
 
@@ -168,6 +187,9 @@ void ResetDebugSpeedMaxValue(int Nr)
 	{
 		DebugSpeedMaxValues[Nr] = 0;
 		DebugSpeedGPUMaxValues[Nr] = 0;
+		DebugSpeedRunningAvgCount[Nr] = 0;
+		DebugSpeedGPURunningAvg[Nr] = 0;
+		DebugSpeedRunningAvg[Nr] = 0;
 	}	
 }
 
@@ -179,6 +201,9 @@ void ResetAllDebugSpeedMaxValues()
 	{
 		DebugSpeedMaxValues[i] = 0;
 		DebugSpeedGPUMaxValues[i] = 0;
+		DebugSpeedRunningAvgCount[i] = 0;
+		DebugSpeedGPURunningAvg[i] = 0;
+		DebugSpeedRunningAvg[i] = 0;
 	}
 }
 

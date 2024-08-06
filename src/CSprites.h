@@ -548,9 +548,13 @@ void CSprites_SetSpriteAnimation(CSprite* Spr, int StartTile, int EndTile, int a
 {
 	Spr->animStartTile = StartTile;
 	Spr->animEndTile = EndTile;
-	Spr->animSpeed = animSpeed;
+	//small optimazation so i don't have to check the code
+	if (StartTile == EndTile)
+		Spr->animSpeed = 0;
+	else
+		Spr->animSpeed = animSpeed;
 	Spr->animTile = StartTile;
-	if (animSpeed != 0)
+	if (Spr->animSpeed != 0)
 	{
 		Spr->animTimer = getCurrentTimeMilliseconds() + (int)floor(1000 / animSpeed);
 

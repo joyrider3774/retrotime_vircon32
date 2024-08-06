@@ -1168,9 +1168,10 @@ void CGameFrog_UpdateLogic(CGameFrog* GameFrog)
 	GameFrog->downpressed |= gamepad_down() == 1;
 	GameFrog->rightpressed |= gamepad_right() == 1;
 	GameFrog->leftpressed |= gamepad_left() == 1;
-
-	if (get_frame_counter() % 2 == 1)
-		return;
+	
+	if(CGameFrog_NumLogicFrames > 1)
+		if (get_frame_counter() % 2 == 1)
+			return;
 
 	if ((GameState == GSTitleScreenInit) || (SubGameState == SGPauseMenu) || (SubGameState == SGFrame) || (SubGameState == SGGameHelp))
 	{
@@ -1239,8 +1240,9 @@ void CGameFrog_UpdateLogic(CGameFrog* GameFrog)
 
 void CGameFrog_Draw(CGameFrog* GameFrog)
 {
-	if (get_frame_counter() % 2 == 0)
-		return;
+	if (CGameFrog_NumLogicFrames > 1)
+		if (get_frame_counter() % 2 == 0)
+			return;
 
 	if ((GameState == GSTitleScreenInit) || (SubGameState == SGPauseMenu) || (SubGameState == SGFrame) || (SubGameState == SGGameHelp))
 		return;

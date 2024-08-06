@@ -13,6 +13,7 @@
 #include "../Common.h"
 #include "../Vec2F.h"
 
+#define CGameBreakOut_candie 1
 #define CGameBreakOut_NumLogicFrames 2
 #define CGameBreakOut_tweenblockpositions 0
 #define CGameBreakOut_tweenblockdeath 1
@@ -380,7 +381,10 @@ void CGameBreakOut_updateball(CGameBreakOut* GameBreakOut)
 					CGameBreakOut_createball(GameBreakOut);
 					GameBreakOut->ball.freeze = 15;
 					if (GameMode == GMGame)
-						GameBreakOut->GameBase->HealthPoints -= 1;
+					{
+						if(CGameBreakOut_candie)
+							GameBreakOut->GameBase->HealthPoints -= 1;
+					}
 					else
 						CGame_AddToScore(-100);
 					CAudio_PlaySound(GameBreakOut->SfxDie, 0);

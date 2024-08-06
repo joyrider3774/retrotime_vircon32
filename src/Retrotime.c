@@ -8,6 +8,7 @@
 #define BENCHMARKSCALESPRITES 1
 #define BENCHMARKROTATEDSPRITES 0
 #define BENCHMARKSTARTSPRITESAMOUNT 1
+#define BENCHMARKANIMATEDSPRITES 0
 #define BENCHMARKENABLED 0
 
 int BenchMarkGFX;
@@ -27,7 +28,10 @@ void benchMarkAddSprite(int amount)
 		Vec2F scale = {-2, 2 };
 		CSprites_SetSpriteImageTiles(sprite,&BenchMarkGFX,6,3);
 		SDL_Point* tz = CSprites_TileSize(sprite);
-		CSprites_SetSpriteAnimation(sprite, 6, 10, 6);
+		if (BENCHMARKANIMATEDSPRITES)
+			CSprites_SetSpriteAnimation(sprite, 6, 10, 6);
+		else
+			CSprites_SetSpriteAnimation(sprite, 6, 6, 0);
 		CSprites_SetSpriteDepth(sprite, 0);
 		scale.x = CGameFrog_playerspeed / tz->x;
 		scale.y = CGameFrog_playerspeed / tz->y;
@@ -85,7 +89,7 @@ void benchmarkMain()
 		PText = Text; *PText = 0; PText = faststrcat(PText, Nr);
 		PText = faststrcat(PText, " sprites ");
 		StopDebugSpeed(2);
-		printDebugSpeed(2,0,20,Text);
+		printDebugSpeed(2,0,20,Text, 1);
 		if(BenchMarkNeedMaxReset > 0)
 		{
 			BenchMarkNeedMaxReset--;
@@ -99,10 +103,10 @@ void main()
 {
 	if(BENCHMARKENABLED)
 	{
+		srand(0);
 		CImage_Init();
 		CSprites_Init();
 		CSprites_SetSpriteMax(1000);
-		srand(0);
 		BenchMarkGFX = CImage_LoadImage("frog/watergrass.png");		
 		benchMarkAddSprite(BENCHMARKSTARTSPRITESAMOUNT);
 	}
@@ -124,9 +128,12 @@ void main()
 
 			CGame_MainLoop();
 			StopDebugSpeed(0);
-			printDebugSpeed(0, 0,180, "FRA ");
-			printDebugSpeed(5, 0,180 + bios_character_height*2, "LGC ");
-			printDebugSpeed(6, 0,180+ bios_character_height*4, "DRW ");
+			//int[10] Nr;
+			//itoa(get_frame_counter()-frames, Nr, 10);
+			//print_at(0,bios_character_height, Nr);
+			printDebugSpeed(0, 0,180, "FRA ", 1);
+			printDebugSpeed(5, 0,180 + bios_character_height*2, "LGC ", 1);
+			printDebugSpeed(6, 0,180+ bios_character_height*4, "DRW ", 1);
 			end_frame();
 		}
 	}

@@ -33,7 +33,7 @@
 
 #define GameFastEddy_laddersfitrows 10
 //tilesize / 2 oroginals are 64x64 was 32x32 
-#define GameFastEddy_rowfloorsizex (32 * xscale)
+#define GameFastEddy_rowfloorsizex (32 * xscale*20)
 //tilesize / 2 oroginals are 64x64 was 32x32 
 #define GameFastEddy_rowfloorsizey (32 * yscale)
 #define GameFastEddy_rows 5
@@ -931,14 +931,7 @@ void CGameFastEddy_createfloors(CGameFastEddy* GameFastEddy)
 			Vec2F scale = {(float)GameFastEddy_rowfloorsizex / tz->x , (float)GameFastEddy_rowfloorsizey / tz->y};
 			GameFastEddy->floors[i].spr->sxscale =  scale.x;
 			GameFastEddy->floors[i].spr->syscale =  scale.y;
-			if (x == 0)
-				tilenr = 36;
-			else
-			{
-				if (x == GameFastEddy->numfloortilesperrow -1)
-					tilenr = 38;
-				else
-					tilenr = 37;
+			tilenr = 37;
 			}
 			CSprites_SetSpriteAnimation(GameFastEddy->floors[i].spr, tilenr, tilenr, 0);
 			i += 1;

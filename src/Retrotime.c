@@ -128,12 +128,10 @@ void main()
 
 			CGame_MainLoop();
 			StopDebugSpeed(0);
-			//int[10] Nr;
-			//itoa(get_frame_counter()-frames, Nr, 10);
-			//print_at(0,bios_character_height, Nr);
 			printDebugSpeed(0, 0,180, "FRA ", 1);
-			printDebugSpeed(5, 0,180 + bios_character_height*2, "LGC ", 1);
-			printDebugSpeed(6, 0,180+ bios_character_height*4, "DRW ", 1);
+			printDebugSpeed(4, 0,180 + bios_character_height*2, "INI ", 1);
+			printDebugSpeed(5, 0,180 + bios_character_height*4, "LGC ", 1);
+			printDebugSpeed(6, 0,180+ bios_character_height*6, "DRW ", 1);
 			end_frame();
 		}
 	}

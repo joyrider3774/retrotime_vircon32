@@ -61,6 +61,7 @@ struct SObjectInfo {
 #define CGameFrog_idcherry 11
 #define CGameFrog_idapple 12
 #define CGameFrog_idlemon 13
+#define CGameFrog_idcount 14
 
 
 #define CGameFrog_cherryspawntrigger 103
@@ -124,6 +125,7 @@ struct CGameFrog {
 	CSpriteObject player;
 	SObjectInfo objectinfo;
 
+	SDL_Point*[CGameFrog_idcount] TzCache;
 
 	int MusMusic, SfxSucces, SfxCollect, SfxDie, SfxPlayerMove;
 
@@ -257,6 +259,8 @@ CGameFrog* Create_CGameFrog()
 	GameFrog->levelincspawns[3] = 570;
 	GameFrog->levelincspawns[4] = 0;
 
+	for (int i= 0; i < CGameFrog_idcount; i++)
+		GameFrog->TzCache[i] = NULL;
 
 	for (int i= 0; i < CGameFrog_maxobjects; i++)
 		Initialize_CSpriteObject(&GameFrog->objects[i]);
@@ -267,6 +271,10 @@ CGameFrog* Create_CGameFrog()
 
 void Destroy_CGameFrog(CGameFrog* GameFrog)
 {
+	for (int i= 0; i < CGameFrog_idcount; i++)
+		if(GameFrog->TzCache[i])
+			free(GameFrog->TzCache[i]);
+
 	CSprites_SetSpriteMax(0);
 	Destroy_CGameBase(GameFrog->GameBase);
 	free(GameFrog);
@@ -312,207 +320,216 @@ int CGameFrog_createobject(CGameFrog* GameFrog, int rownr, int col, int id, int 
 			Initialize_CSpriteObject(object);
 
 			object->spr = CSprites_CreateSprite();
-
-			if ((id == CGameFrog_idwater) || (id == CGameFrog_idroad) || (id == CGameFrog_idgrass))
+			switch(id)
 			{
-				// tilenr = GameFrog->rowtypes[arowtype].backgroundtile;
-				// endtilenr = GameFrog->rowtypes[arowtype].backgroundtileend;
-				// CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetbackground,5,3);
-				// tz = CSprites_TileSize(object->spr);
-				// CSprites_SetSpriteAnimation(object->spr, tilenr, endtilenr, 6);
-				// CSprites_SetSpriteDepth(object->spr, 0);
-				// //col == 0 is hack to have less drawing calls for the sprites
-				// //i made the road water and grass tile equal in size as the width needed for a row
-				// //so we only need the 1st tile to be visible
-				// //however i was not able to not create the other sprite parts somehow
-				// //it introduced a bug with row generating and i have not figured out yet
-				// //whats causing that so this is a nasty workaround but still have an optimazation
-				// //of only doing 1 big draw call for the road / water per row instead of multiple small ones
-				// CSprites_SetSpriteVisibility(object->spr, col == 0);
-				// object->vel.x = 0.0;
-				// object->vel.y = 0.0;
-				// //scale.x = {CGameFrog_playerspeed / tz.x, CGameFrog_playerspeed / tz.y}
-				// scale.x = 6.0;
-				// scale.y = CGameFrog_playerspeed / tz->y;
-				// visualscale = scale;
-				// object->tz.x = (int)(tz->x * scale.x);
-				// object->tz.y = (int)(tz->y * scale.y);
 
-				tilenr = GameFrog->rowtypes[arowtype].backgroundtile;
-				endtilenr = GameFrog->rowtypes[arowtype].backgroundtileend;
-				CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetbackground,6,3);
-				tz = CSprites_TileSize(object->spr);
-				CSprites_SetSpriteAnimation(object->spr, tilenr, endtilenr, 6);
-				CSprites_SetSpriteDepth(object->spr, 0);
-				object->vel.x = 0.0;
-				object->vel.y = 0.0;
-				scale.x = CGameFrog_playerspeed / tz->x;
-				scale.y = CGameFrog_playerspeed / tz->y;
-				visualscale = scale;
-				object->tz.x = tz->x * scale.x;
-				object->tz.y = tz->y * scale.y;
-			}
+				case CGameFrog_idwater:
+				case CGameFrog_idroad:
+				case CGameFrog_idgrass:
+					// tilenr = GameFrog->rowtypes[arowtype].backgroundtile;
+					// endtilenr = GameFrog->rowtypes[arowtype].backgroundtileend;
+					// CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetbackground,5,3);
+					// tz = CSprites_TileSize(object->spr);
+					// CSprites_SetSpriteAnimation(object->spr, tilenr, endtilenr, 6);
+					// CSprites_SetSpriteDepth(object->spr, 0);
+					// //col == 0 is hack to have less drawing calls for the sprites
+					// //i made the road water and grass tile equal in size as the width needed for a row
+					// //so we only need the 1st tile to be visible
+					// //however i was not able to not create the other sprite parts somehow
+					// //it introduced a bug with row generating and i have not figured out yet
+					// //whats causing that so this is a nasty workaround but still have an optimazation
+					// //of only doing 1 big draw call for the road / water per row instead of multiple small ones
+					// CSprites_SetSpriteVisibility(object->spr, col == 0);
+					// object->vel.x = 0.0;
+					// object->vel.y = 0.0;
+					// //scale.x = {CGameFrog_playerspeed / tz.x, CGameFrog_playerspeed / tz.y}
+					// scale.x = 6.0;
+					// scale.y = CGameFrog_playerspeed / tz->y;
+					// visualscale = scale;
+					// object->tz.x = (int)(tz->x * scale.x);
+					// object->tz.y = (int)(tz->y * scale.y);
 
-			if (id == CGameFrog_idenemyplant)
-			{
-				tilenr = 1;
-				CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetplant, 2, 1);
-				tz = CSprites_TileSize(object->spr);
+					tilenr = GameFrog->rowtypes[arowtype].backgroundtile;
+					endtilenr = GameFrog->rowtypes[arowtype].backgroundtileend;
+					CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetbackground,6,3);
+					if(GameFrog->TzCache[id] == NULL)
+						GameFrog->TzCache[id] = CSprites_TileSize(object->spr);
+					tz = GameFrog->TzCache[id];
+					CSprites_SetSpriteAnimation(object->spr, tilenr, endtilenr, 6);
+					CSprites_SetSpriteDepth(object->spr, 0);
+					object->vel.x = 0.0;
+					object->vel.y = 0.0;
+					scale.x = CGameFrog_playerspeed / tz->x;
+					scale.y = CGameFrog_playerspeed / tz->y;
+					visualscale = scale;
+					object->tz.x = tz->x * scale.x;
+					object->tz.y = tz->y * scale.y;
+					break;
+				case CGameFrog_idenemycar1:
+					tilenr = 0;
+					if (dir == -1)
+						tilenr = 1;
 
-				CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
-				CSprites_SetSpriteDepth(object->spr, 1);
-				//scale = {(CGameFrog_playerspeed - int(CGameFrog_playerspeed / 48)) / tz.x, (CGameFrog_playerspeed - int(CGameFrog_playerspeed / 48)) / tz.y}
-				scale.x = CGameFrog_playerspeed / tz->x;
-				scale.y = CGameFrog_playerspeed / tz->y;
-				visualscale = scale;
-				object->vel.x = dir*speed;
-				object->vel.y = 0.0;
-				object->tz.x = (int)(tz->x * scale.x);
-				object->tz.y = (int)(tz->y * scale.y);
-			}
+					CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetcar1, 2, 1);
+					if(GameFrog->TzCache[id] == NULL)
+						GameFrog->TzCache[id] = CSprites_TileSize(object->spr);
+					tz = GameFrog->TzCache[id];
+					CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
+					CSprites_SetSpriteDepth(object->spr, 3);
+					object->vel.x = dir*speed;
+					object->vel.y = 0.0;
+					scale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->x;
+					scale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->y;
+					visualscale = scale;
+					object->tz.x = (int)(tz->x * scale.x);
+					object->tz.y = (int)(tz->y * scale.y);
+					break;
+				case CGameFrog_idenemycar2:
+					tilenr = 0;
+					if (dir == -1)
+						tilenr = 1;
 
-			if (id == CGameFrog_idenemycar1)
-			{
-				tilenr = 0;
-				if (dir == -1)
+					CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetcar2, 2, 1);
+					if(GameFrog->TzCache[id] == NULL)
+						GameFrog->TzCache[id] = CSprites_TileSize(object->spr);
+					tz = GameFrog->TzCache[id];
+					CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
+					CSprites_SetSpriteDepth(object->spr, 3);
+					object->vel.x = dir*speed;
+					object->vel.y = 0.0;
+					scale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->x;
+					scale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->y;
+					visualscale = scale;
+					object->tz.x = (int)(tz->x * scale.x);
+					object->tz.y = (int)(tz->y * scale.y);
+					break;
+				case CGameFrog_idenemycar3:
+					tilenr = 0;
+					if (dir == -1)
+						tilenr = 1;
+
+					CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetcar3, 2, 1);
+					if(GameFrog->TzCache[id] == NULL)
+						GameFrog->TzCache[id] = CSprites_TileSize(object->spr);
+					tz = GameFrog->TzCache[id];
+					CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
+					CSprites_SetSpriteDepth(object->spr, 3);
+					object->vel.x = dir*speed;
+					object->vel.y = 0.0;
+					scale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->x;
+					scale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->y;
+					visualscale = scale;
+					object->tz.x = (int)(tz->x * scale.x);
+					object->tz.y = (int)(tz->y * scale.y);
+					break;
+
+				case CGameFrog_idenemycar4:
+					tilenr = 0;
+					if (dir == -1)
+						tilenr = 1;
+
+					CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetcar4, 2, 1);
+					if(GameFrog->TzCache[id] == NULL)
+						GameFrog->TzCache[id] = CSprites_TileSize(object->spr);
+					tz = GameFrog->TzCache[id];
+					CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
+					CSprites_SetSpriteDepth(object->spr, 3);
+					object->vel.x = dir*speed;
+					object->vel.y = 0.0;
+					scale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->x;
+					scale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->y;
+					visualscale = scale;
+					object->tz.x = (int)(tz->x * scale.x);
+					object->tz.y = (int)(tz->y * scale.y);
+					break;
+				
+				case CGameFrog_idenemycar5:
+					tilenr = 0;
+					if (dir == -1)
+						tilenr = 1;
+
+					CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetcar5, 2, 1);
+					if(GameFrog->TzCache[id] == NULL)
+						GameFrog->TzCache[id] = CSprites_TileSize(object->spr);
+					tz = GameFrog->TzCache[id];
+					CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
+					CSprites_SetSpriteDepth(object->spr, 3);
+					object->vel.x = dir*speed;
+					object->vel.y = 0.0;
+					scale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->x;
+					scale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->y;
+					visualscale = scale;
+					object->tz.x = (int)(tz->x * scale.x);
+					object->tz.y = (int)(tz->y * scale.y);
+					break;
+				case CGameFrog_idenemyplant:
 					tilenr = 1;
+					CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetplant, 2, 1);
+					if(GameFrog->TzCache[id] == NULL)
+						GameFrog->TzCache[id] = CSprites_TileSize(object->spr);
+					tz = GameFrog->TzCache[id];
 
-				CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetcar1, 2, 1);
-				tz = CSprites_TileSize(object->spr);
-				CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
-				CSprites_SetSpriteDepth(object->spr, 3);
-				object->vel.x = dir*speed;
-				object->vel.y = 0.0;
-				scale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->x;
-				scale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->y;
-				visualscale = scale;
-				object->tz.x = (int)(tz->x * scale.x);
-				object->tz.y = (int)(tz->y * scale.y);
-			}
+					CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
+					CSprites_SetSpriteDepth(object->spr, 1);
+					//scale = {(CGameFrog_playerspeed - int(CGameFrog_playerspeed / 48)) / tz.x, (CGameFrog_playerspeed - int(CGameFrog_playerspeed / 48)) / tz.y}
+					scale.x = CGameFrog_playerspeed / tz->x;
+					scale.y = CGameFrog_playerspeed / tz->y;
+					visualscale = scale;
+					object->vel.x = dir*speed;
+					object->vel.y = 0.0;
+					object->tz.x = (int)(tz->x * scale.x);
+					object->tz.y = (int)(tz->y * scale.y);
+					break;
+				case CGameFrog_idcherry:
+					tilenr = 0;
 
-			if (id == CGameFrog_idenemycar2)
-			{
-				tilenr = 0;
-				if (dir == -1)
-					tilenr = 1;
+					CSprites_SetSpriteImage(object->spr, &GameFrog->spritesheetfruit1);
+					if(GameFrog->TzCache[id] == NULL)
+						GameFrog->TzCache[id] = CSprites_TileSize(object->spr);
+					tz = GameFrog->TzCache[id];
+					CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
+					object->vel.x = dir*speed;
+					object->vel.y = 0.0;
+					scale.x = CGameFrog_playerspeed / tz->x;
+					scale.y = CGameFrog_playerspeed / tz->y;
+					visualscale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->x;
+					visualscale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->y;
+					CSprites_SetSpriteDepth(object->spr, 3);
+					break;
+				case CGameFrog_idlemon:
+					tilenr = 0;
 
-				CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetcar2, 2, 1);
-				tz = CSprites_TileSize(object->spr);
-				CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
-				CSprites_SetSpriteDepth(object->spr, 3);
-				object->vel.x = dir*speed;
-				object->vel.y = 0.0;
-				scale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->x;
-				scale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->y;
-				visualscale = scale;
-				object->tz.x = (int)(tz->x * scale.x);
-				object->tz.y = (int)(tz->y * scale.y);
-			}
+					CSprites_SetSpriteImage(object->spr, &GameFrog->spritesheetfruit2);
+					if(GameFrog->TzCache[id] == NULL)
+						GameFrog->TzCache[id] = CSprites_TileSize(object->spr);
+					tz = GameFrog->TzCache[id];
+					CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
+					object->vel.x = dir*speed;
+					object->vel.y = 0.0;
+					scale.x = CGameFrog_playerspeed / tz->x;
+					scale.y = CGameFrog_playerspeed / tz->y;
+					visualscale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->x;
+					visualscale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->y;
+					CSprites_SetSpriteDepth(object->spr, 3);
+					break;
+				case CGameFrog_idapple:
+					tilenr = 0;
 
-			if (id == CGameFrog_idenemycar3)
-			{
-				tilenr = 0;
-				if (dir == -1)
-					tilenr = 1;
-
-				CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetcar3, 2, 1);
-				tz = CSprites_TileSize(object->spr);
-				CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
-				CSprites_SetSpriteDepth(object->spr, 3);
-				object->vel.x = dir*speed;
-				object->vel.y = 0.0;
-				scale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->x;
-				scale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->y;
-				visualscale = scale;
-				object->tz.x = (int)(tz->x * scale.x);
-				object->tz.y = (int)(tz->y * scale.y);
-			}
-
-			if (id == CGameFrog_idenemycar4)
-			{
-				tilenr = 0;
-				if (dir == -1)
-					tilenr = 1;
-
-				CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetcar4, 2, 1);
-				tz = CSprites_TileSize(object->spr);
-				CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
-				CSprites_SetSpriteDepth(object->spr, 3);
-				object->vel.x = dir*speed;
-				object->vel.y = 0.0;
-				scale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->x;
-				scale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->y;
-				visualscale = scale;
-				object->tz.x = (int)(tz->x * scale.x);
-				object->tz.y = (int)(tz->y * scale.y);
-			}
-
-			if (id == CGameFrog_idenemycar5)
-			{
-				tilenr = 0;
-				if (dir == -1)
-					tilenr = 1;
-
-				CSprites_SetSpriteImageTiles(object->spr, &GameFrog->spritesheetcar5, 2, 1);
-				tz = CSprites_TileSize(object->spr);
-				CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
-				CSprites_SetSpriteDepth(object->spr, 3);
-				object->vel.x = dir*speed;
-				object->vel.y = 0.0;
-				scale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->x;
-				scale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 6)) / tz->y;
-				visualscale = scale;
-				object->tz.x = (int)(tz->x * scale.x);
-				object->tz.y = (int)(tz->y * scale.y);
-			}
-
-
-			if (id == CGameFrog_idcherry)
-			{
-				tilenr = 0;
-
-				CSprites_SetSpriteImage(object->spr, &GameFrog->spritesheetfruit1);
-				tz = CSprites_TileSize(object->spr);
-				CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
-				object->vel.x = dir*speed;
-				object->vel.y = 0.0;
-				scale.x = CGameFrog_playerspeed / tz->x;
-				scale.y = CGameFrog_playerspeed / tz->y;
-				visualscale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->x;
-				visualscale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->y;
-				CSprites_SetSpriteDepth(object->spr, 3);
-			}
-
-			if (id == CGameFrog_idlemon)
-			{
-				tilenr = 0;
-
-				CSprites_SetSpriteImage(object->spr, &GameFrog->spritesheetfruit2);
-				tz = CSprites_TileSize(object->spr);
-				CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
-				object->vel.x = dir*speed;
-				object->vel.y = 0.0;
-				scale.x = CGameFrog_playerspeed / tz->x;
-				scale.y = CGameFrog_playerspeed / tz->y;
-				visualscale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->x;
-				visualscale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->y;
-				CSprites_SetSpriteDepth(object->spr, 3);
-			}
-
-			if (id == CGameFrog_idapple)
-			{
-				tilenr = 0;
-
-				CSprites_SetSpriteImage(object->spr, &GameFrog->spritesheetfruit3);
-				tz = CSprites_TileSize(object->spr);
-				CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
-				object->vel.x = dir*speed;
-				object->vel.y = 0.0;
-				scale.x = CGameFrog_playerspeed / tz->x;
-				scale.y = CGameFrog_playerspeed / tz->y;
-				visualscale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->x;
-				visualscale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->y;
-				CSprites_SetSpriteDepth(object->spr, 3);
+					CSprites_SetSpriteImage(object->spr, &GameFrog->spritesheetfruit3);
+					if(GameFrog->TzCache[id] == NULL)
+						GameFrog->TzCache[id] = CSprites_TileSize(object->spr);
+					tz = GameFrog->TzCache[id];
+					CSprites_SetSpriteAnimation(object->spr, tilenr, tilenr, 0);
+					object->vel.x = dir*speed;
+					object->vel.y = 0.0;
+					scale.x = CGameFrog_playerspeed / tz->x;
+					scale.y = CGameFrog_playerspeed / tz->y;
+					visualscale.x = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->x;
+					visualscale.y = (CGameFrog_playerspeed - (CGameFrog_playerspeed / 2)) / tz->y;
+					CSprites_SetSpriteDepth(object->spr, 3);
+					break;
+				default:
+					break;
 			}
 			//setSpriteRotation(GameFrog->object->s[i].spr, 0)
 			object->spr->sxscale = visualscale.x;
@@ -528,7 +545,6 @@ int CGameFrog_createobject(CGameFrog* GameFrog, int rownr, int col, int id, int 
 			object->alive = true;
 			GameFrog->numobjects +=1;
 			result = i;
-			free(tz);
 			break;
 		}
 	}

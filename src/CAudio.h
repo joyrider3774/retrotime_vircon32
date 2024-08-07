@@ -1,6 +1,7 @@
 #ifndef CAUDIO_H
 #define CAUDIO_H
 
+#include "audio.h"
 #include "string.h"
 #include "CAudio.h"
 
@@ -14,6 +15,236 @@ int*[SND_Max] CAudio_Sounds;
 int*[MUS_Max] CAudio_Music;
 bool CAudio_GlobalSoundEnabled = true;
 
+int* filenameToAudio(int* FileName)
+{
+	int* result = NULL;
+	//music 
+	if (strcmp(FileName, "main/music") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 0;
+	}
+	
+	if (strcmp(FileName, "blockstacker/music") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 1;
+	}
+	
+	if (strcmp(FileName, "breakout/music") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 2;
+	}
+	
+	if (strcmp(FileName, "fasterdave/music") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 3;
+	}
+
+	if (strcmp(FileName, "frog/music") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 4;
+	}
+
+	if (strcmp(FileName, "invaders/music") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 5;
+	}
+
+	if (strcmp(FileName, "pang/music") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 6;
+	}
+	
+	if (strcmp(FileName, "ramit/music") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 7;
+	}
+	
+	if (strcmp(FileName, "snakey/music") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 8;
+	}
+
+	//sound 
+	if (strcmp(FileName, "blockstacker/drop") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 9;
+	}
+
+	if (strcmp(FileName, "blockstacker/lineclear") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 10;
+	}
+
+	if (strcmp(FileName, "blockstacker/rotate") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 11;
+	}
+
+	if (strcmp(FileName, "breakout/bat") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 12;
+	}
+
+	if (strcmp(FileName, "breakout/brick") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 13;
+	}
+
+	if (strcmp(FileName, "frog/move") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 14;
+	}
+
+	if (strcmp(FileName, "invaders/enemydeath") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 15;
+	}
+
+	if (strcmp(FileName, "invaders/enemyshoot") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 16;
+	}
+
+	if (strcmp(FileName, "invaders/playerdeath") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 17;
+	}
+
+	if (strcmp(FileName, "invaders/playershoot") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 18;
+	}
+
+	if (strcmp(FileName, "pang/pop") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 19;
+	}
+
+	if (strcmp(FileName, "pang/shoot") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 20;
+	}
+
+	if (strcmp(FileName, "ramit/hit") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 21;
+	}
+
+	if (strcmp(FileName, "ramit/shoot") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 22;
+	}
+
+	if (strcmp(FileName, "snakey/food") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 23;
+	}
+
+	if (strcmp(FileName, "common/coin") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 24;
+	}
+
+	if (strcmp(FileName, "common/die") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 25;
+	}
+
+	if (strcmp(FileName, "common/one") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 26;
+	}
+
+	if (strcmp(FileName, "common/oneminute") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 27;
+	}
+
+	if (strcmp(FileName, "common/readygo") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 28;
+	}
+
+	if (strcmp(FileName, "common/succes") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 29;
+	}
+
+	if (strcmp(FileName, "common/three") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 30;
+	}
+
+	if (strcmp(FileName, "common/timeover") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 31;
+	}
+
+	if (strcmp(FileName, "common/two") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 32;
+	}
+
+	if (strcmp(FileName, "main/back") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 33;
+	}
+
+	if (strcmp(FileName, "main/confirm") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 34;
+	}
+
+	if (strcmp(FileName, "main/score") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 35;
+	}
+
+	if (strcmp(FileName, "main/select") == 0)
+	{
+		result = (int*) malloc(sizeof(int));
+		*result = 36;
+	}
+
+	return result;
+}
+
 void CAudio_Init()
 {
 	CAudio_GlobalSoundEnabled = true;
@@ -24,33 +255,38 @@ void CAudio_Init()
 
 	for (int i=0; i < MUS_Max; i++)
 		CAudio_Music[i] = NULL;
+	
+	for(int i=0; i < sound_channels; i++)
+	{
+		select_channel(i);
+		set_channel_volume(1.0);
+	}
 }
 
 
 // set the volume of the music
 void CAudio_SetVolumeMusic(int VolumeIn)
 {
-	// if (CAudio_GlobalSoundEnabled)
-	// {
-	// 	CAudio_VolumeMusic = VolumeIn;
-	// 	for (int i = 0; i < MUS_Max; i++)
-	// 		if (CAudio_Music[i])
-	// 			if(pd->sound->fileplayer->isPlaying(CAudio_Music[i]))
-	// 				pd->sound->fileplayer->setVolume(CAudio_Music[i], (float)VolumeIn / 128.0, (float)VolumeIn / 128.0);
-	// }
+	if (CAudio_GlobalSoundEnabled)
+	{
+		CAudio_VolumeMusic = VolumeIn;
+		select_channel(0);
+		set_channel_volume(VolumeIn / 128.0);
+	}
 }
 
 // set the volume of sound
 void CAudio_SetVolumeSound(int VolumeIn)
 {
-	// if (CAudio_GlobalSoundEnabled)
-	// {
-	// 	CAudio_VolumeSound = VolumeIn;
-	// 	for (int i = 0; i < SND_Max; i++)
-	// 		if (CAudio_Sounds[i])
-	// 			if(pd->sound->sampleplayer->isPlaying(CAudio_Sounds[i]))
-	// 				pd->sound->sampleplayer->setVolume(CAudio_Sounds[i], (float)VolumeIn / 128.0f, (float)VolumeIn / 128.0f);
-	// }
+	if (CAudio_GlobalSoundEnabled)
+	{
+		CAudio_VolumeSound = VolumeIn;
+		for (int i = 1; i < sound_channels; i++)
+		{
+			select_channel(i);
+			set_channel_volume(VolumeIn / 128.0);
+		}
+	}
 }
 
 // increase the music volume with 4
@@ -107,10 +343,8 @@ void CAudio_DecVolumeSound()
 
 void CAudio_StopMusic()
 {
-	// if (CAudio_GlobalSoundEnabled)
-	// 	for (int i = 0; i < MUS_Max; i++)
-	// 		if (CAudio_Music[i])
-	// 			pd->sound->fileplayer->stop(CAudio_Music[i]);
+	if (CAudio_GlobalSoundEnabled)
+		stop_channel(0);
 }
 
 bool CAudio_IsMusicPlaying()
@@ -118,12 +352,7 @@ bool CAudio_IsMusicPlaying()
 	if(!CAudio_GlobalSoundEnabled)
 		return false;
 
-	bool result = false;
-	// for (int i = 0; i < MUS_Max; i++)
-	// 	if (CAudio_Music[i])
-	// 		result = result || pd->sound->fileplayer->isPlaying(CAudio_Music[i]);
-
-	return result;
+	return get_channel_state(0) == channel_playing;
 }
 
 void CAudio_UnLoadMusic(int MusicdID)
@@ -133,14 +362,11 @@ void CAudio_UnLoadMusic(int MusicdID)
 
 	if (CAudio_Music[MusicdID] == NULL)
 		return;
-
 	else
 	{
-		// pd->sound->fileplayer->stop(CAudio_Music[MusicdID]);
-		// pd->sound->fileplayer->freePlayer(CAudio_Music[MusicdID]);
+		free(CAudio_Music[MusicdID]);
 		CAudio_Music[MusicdID] = NULL;
 		CAudio_MusicSlotsUsed--;
-		
 	}
 }
 
@@ -155,63 +381,35 @@ int CAudio_LoadMusic(int* FileName)
 {
 	int result = -1;
 	
-	// char * FullFileName;
-	// pd->system->formatString(&FullFileName, "music/%s",FileName);
-	// if (CAudio_GlobalSoundEnabled)
-	// 	for (int i=0; i < MUS_Max; i++)
-	// 		if(CAudio_Music[i] == NULL)
-	// 		{
-	// 			FilePlayer* Tmp = pd->sound->fileplayer->newPlayer();
-	// 			if (Tmp)
-	// 			{
-	// 				if (pd->sound->fileplayer->loadIntoPlayer(Tmp, FullFileName) == 1)
-	// 				{						
-	// 					CAudio_Music[i] = Tmp;
-	// 					if (CAudio_DebugInfo)
-	// 						pd->system->logToConsole("Loaded Music %s\n", FullFileName);
-	// 					result = i;
-	// 				}
-	// 				else
-	// 				{
-	// 					pd->sound->fileplayer->freePlayer(Tmp);
-	// 				}
-	// 			}
-	// 			break;
-	// 		}
-	
-	// if(result == -1)
-	// 	if(CAudio_DebugInfo)
-	// 		pd->system->logToConsole("Failed Loading Music %s", FullFileName);
-	
-	// pd->system->realloc(FullFileName, 0);
-	CAudio_MusicSlotsUsed++;
+	if (CAudio_GlobalSoundEnabled)
+		for (int i=0; i < MUS_Max; i++)
+			if(CAudio_Music[i] == NULL)
+			{
+				CAudio_Music[i] = filenameToAudio(FileName);
+				if(CAudio_Music[i])
+				{
+					CAudio_MusicSlotsUsed++;
+					result = i;
+				}
+				break;
+			}
 	return result;
 }
 
-// int CAudio_MusicSlotsUsed()
-// {
-// 	int c = 0;
-// 	for (int i=0; i < MUS_Max; i++)
-// 	{
-// 		if(CAudio_Music[i] != NULL)
-// 			c++;
-// 	}
-// 	return c;
-// }
-
-// int CAudio_MusicSlotsMax()
-// {
-// 	return MUS_Max;
-// }
 
 void CAudio_PlayMusic(int MusicID, int loops)
 {
 	if ((MusicID < 0) || (MusicID > MUS_Max) || !CAudio_GlobalSoundEnabled)
 		return;
 
+	if(CAudio_Music[MusicID] == NULL)
+		return;
+
 	CAudio_StopMusic();
-	// pd->sound->fileplayer->setVolume(CAudio_Music[MusicID], (float)CAudio_VolumeMusic / 128.0, (float)CAudio_VolumeMusic / 128.0);
-	// pd->sound->fileplayer->play(CAudio_Music[MusicID], loops +1);
+	select_sound(*CAudio_Music[MusicID]);
+	set_sound_loop(loops == -1);
+	assign_channel_sound(0, *CAudio_Music[MusicID]);
+	play_channel(0);
 }
 
 int CAudio_GetVolumeMusic()
@@ -219,69 +417,40 @@ int CAudio_GetVolumeMusic()
 	return CAudio_VolumeMusic;
 }
 
-// int CAudio_SoundSlotsUsed()
-// {
-// 	int c = 0;
-// 	for (int i=0; i < SND_Max; i++)
-// 	{
-// 		if(CAudio_Sounds[i] != NULL)
-// 			c++;
-// 	}
-// 	return c;
-// }
-
-// int CAudio_SoundSlotsMax()
-// {
-// 	return SND_Max;
-// }
-
 
 void CAudio_PlaySound(int SoundID, int loops)
 {
 	if ((SoundID < 0) || (SoundID > SND_Max) || !CAudio_GlobalSoundEnabled)
 		return;
-	// pd->sound->sampleplayer->setVolume(CAudio_Sounds[SoundID], (float)CAudio_VolumeSound / 128.0, (float)CAudio_VolumeSound / 128.0);
-	// pd->sound->sampleplayer->play(CAudio_Sounds[SoundID], loops +1, 1.0f);
+
+	if (CAudio_Sounds[SoundID] == NULL)
+		return;
+
+	for (int i = 1; i < sound_channels; i++)
+		if(get_channel_state(i) == channel_stopped)
+		{
+			assign_channel_sound(i, *CAudio_Sounds[SoundID]);
+			play_channel(i);
+			break;
+		}
 }
 
 int CAudio_LoadSound(int* FileName)
 {
 	int result = -1;
-
-	// char* FullFileName;
-	// pd->system->formatString(&FullFileName, "sound/%s", FileName);
-
-	// if(CAudio_GlobalSoundEnabled)
-	// 	for (int i=0; i < SND_Max; i++)
-	// 		if(CAudio_Sounds[i] == NULL)
-	// 		{
-	// 			SamplePlayer* Tmp = pd->sound->sampleplayer->newPlayer();
-	// 			if(Tmp)
-	// 			{
-	// 				AudioSample* Sample = pd->sound->sample->load(FullFileName);
-	// 				if (Sample)
-	// 				{
-	// 					pd->sound->sampleplayer->setSample(Tmp, Sample);
-	// 					pd->sound->sampleplayer->setVolume(Tmp, (float)CAudio_VolumeSound / 128.0f, (float)CAudio_VolumeSound / 128.0f);
-	// 					CAudio_Sounds[i] = Tmp;
-	// 					if (CAudio_DebugInfo)
-	// 						pd->system->logToConsole("Loaded Sound %s\n", FullFileName);
-	// 					result = i;
-	// 				}
-	// 				else
-	// 				{
-	// 					pd->sound->sampleplayer->freePlayer(Tmp);
-	// 				}
-	// 			}
-	// 			break;
-	// 		}
-
-	// if (result == -1)
-	// 	if(CAudio_DebugInfo)
-	// 		pd->system->logToConsole("Failed Loading Sound %s\n", FullFileName);
 	
-	// pd->system->realloc(FullFileName, 0);
-	CAudio_SoundSlotsUsed++;
+	if (CAudio_GlobalSoundEnabled)
+		for (int i=0; i < SND_Max; i++)
+			if(CAudio_Sounds[i] == NULL)
+			{
+				CAudio_Sounds[i] = filenameToAudio(FileName);
+				if(CAudio_Sounds[i])
+				{
+					CAudio_SoundSlotsUsed++;
+					result = i;
+				}
+				break;
+			}
 	return result;
 }
 
@@ -294,8 +463,7 @@ void CAudio_UnLoadSound(int SoundID)
 		return;
 	else
 	{
-		// pd->sound->sampleplayer->stop(CAudio_Sounds[SoundID]);
-		// pd->sound->sampleplayer->freePlayer(CAudio_Sounds[SoundID]);
+		free(CAudio_Sounds[SoundID]);
 		CAudio_SoundSlotsUsed--;
 		CAudio_Sounds[SoundID] = NULL;
 	}
@@ -309,10 +477,9 @@ int CAudio_GetVolumeSound()
 
 void CAudio_StopSound()
 {
-	// if(CAudio_GlobalSoundEnabled)
-	// 	for (int i = 0; i < SND_Max; i++)
-	// 		if (CAudio_Sounds[i] != NULL)
-	// 			pd->sound->sampleplayer->stop(CAudio_Sounds[i]);
+	if(CAudio_GlobalSoundEnabled)
+	 	for (int i = 1; i < sound_channels; i++)
+	 		stop_channel(i);
 }
 
 void CAudio_UnloadSounds()

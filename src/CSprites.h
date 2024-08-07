@@ -385,7 +385,6 @@ void CSprites_SortSprites()
 	if (CSprites_needSpriteSorting)
 	{
 		timSort(CSprites_Sprites, CSprites_spriteMax - 1);
-		//CSprites_printArray(CSprites_Sprites, CSprites_spriteMax - 1);
 		CSprites_needSpriteSorting = false;
 	}
 

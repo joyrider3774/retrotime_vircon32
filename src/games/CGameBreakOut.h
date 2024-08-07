@@ -28,14 +28,6 @@
 #define CGameBreakOut_blockcols 17
 #define CGameBreakOut_numblocks (CGameBreakOut_blockrows * CGameBreakOut_blockcols)
 
-struct sblockinfo
-{
-	int mostleft;
-	int mostright;
-	int mostbottom;
-};
-
-
 struct CGameBreakOut
 {
 
@@ -55,55 +47,24 @@ struct CGameBreakOut
 
 	float curballspeed;
 	int pattern;
-	sblockinfo blockinfo;
+	int blocksAlive;
+	//sblockinfo blockinfo;
 	CSpriteObject[CGameBreakOut_numblocks] blocks;
 	CTweenInfo*[CGameBreakOut_numblocks][2] tweens;
 	CSpriteObject player;
 	CSpriteObject ball;
+
+	SDL_Point* BlockTzCache;
 };
 
 
 //blocks ----------------------------------------------------------------------------------------------------------------
 
-void CGameBreakOut_updateblockinfo(CGameBreakOut* GameBreakOut)
-{
-	GameBreakOut->blockinfo.mostleft = -1;
-	GameBreakOut->blockinfo.mostright = -1;
-	GameBreakOut->blockinfo.mostbottom = -1;
-
-	float x1 = (float)(GameBreakOut->GameBase->screenright + 1);
-	float x2 = (float)(GameBreakOut->GameBase->screenleft - 1);
-	float y = (float)GameBreakOut->GameBase->screentop - 1;
-	for (int i = 0; i < CGameBreakOut_numblocks; i++)
-	{
-		if (GameBreakOut->blocks[i].alive)
-		{
-			if (GameBreakOut->blocks[i].pos.x < x1)
-			{
-				x1 = GameBreakOut->blocks[i].pos.x;
-				GameBreakOut->blockinfo.mostleft = i;
-			}
-
-			if (GameBreakOut->blocks[i].pos.x > x2)
-			{
-				x2 = GameBreakOut->blocks[i].pos.x;
-				GameBreakOut->blockinfo.mostright = i;
-			}
-
-			if (GameBreakOut->blocks[i].pos.y > y)
-			{
-				y = GameBreakOut->blocks[i].pos.y;
-				GameBreakOut->blockinfo.mostbottom = i;
-			}
-		}
-	}
-}
-
-
 void CGameBreakOut_destroyblock(CGameBreakOut* GameBreakOut, int index)
 {
 	if(GameBreakOut->blocks[index].alive)
 	{
+		GameBreakOut->blocksAlive--;
 		CSprites_RemoveSprite(GameBreakOut->blocks[index].spr);
 		GameBreakOut->blocks[index].alive = false;
 	}
@@ -118,6 +79,7 @@ void CGameBreakOut_destroyallblocks(CGameBreakOut* GameBreakOut)
 
 void CGameBreakOut_createblocks(CGameBreakOut* GameBreakOut, bool setlocation)
 {
+	SDL_Point* tz;
 	GameBreakOut->pattern = rand() % 5;
 	for (int x = 0; x < CGameBreakOut_blockcols; x++)
 	{
@@ -127,31 +89,42 @@ void CGameBreakOut_createblocks(CGameBreakOut* GameBreakOut, bool setlocation)
 			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].spr = CSprites_CreateSprite();
 			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].state = 0;
 			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].alive = true;
+			GameBreakOut->blocksAlive++;
 			CSprites_SetSpriteImageTiles(GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].spr, &GameBreakOut->spritesheetblocks, 6, 1);
-			SDL_Point* tz = CSprites_TileSize(GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].spr);
-			tz->x = (int)(tz->x * GameBreakOut->blockspritecale.x);
-			tz->y = (int)(tz->y * GameBreakOut->blockspritecale.y);
-			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].tz = *tz;
+			if(GameBreakOut->BlockTzCache == NULL)
+			{
+				GameBreakOut->BlockTzCache = CSprites_TileSize(GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].spr);
+				GameBreakOut->BlockTzCache->x = GameBreakOut->BlockTzCache->x * GameBreakOut->blockspritecale.x;
+				GameBreakOut->BlockTzCache->y = GameBreakOut->BlockTzCache->y * GameBreakOut->blockspritecale.y;
+			}
+			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].tz.x = GameBreakOut->BlockTzCache->x;
+			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].tz.y = GameBreakOut->BlockTzCache->y;
 			CSprites_SetSpriteAnimation(GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].spr, y % 6, y % 6, 0);
 
 			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].spr->sxscale = GameBreakOut->blockspritecale.x;
 			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].spr->syscale = GameBreakOut->blockspritecale.y;
-			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].pos.x = GameBreakOut->GameBase->screenleft + CGameBreakOut_blockxoffset + (x * tz->x);
-			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].pos.y = GameBreakOut->GameBase->screentop + CGameBreakOut_blockyoffset + y * tz->y;
+			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].pos.x = GameBreakOut->GameBase->screenleft + CGameBreakOut_blockxoffset + (x * GameBreakOut->BlockTzCache->x);
+			GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].pos.y = GameBreakOut->GameBase->screentop + CGameBreakOut_blockyoffset + (y * GameBreakOut->BlockTzCache->y);
 			if (setlocation)
 			{
 				GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].spr->x = GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].pos.x;
 				GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].spr->y = GameBreakOut->blocks[x + y * CGameBreakOut_blockcols].pos.y;
 			}
-			free(tz);
 		}
 	}
-	CGameBreakOut_updateblockinfo(GameBreakOut);
 }
 
 
 void CGameBreakOut_updateblocks(CGameBreakOut* GameBreakOut)
 {
+	if (GameBreakOut->blocksAlive == 0)
+	{
+		CGame_AddToScore(500);
+		CGameBreakOut_createblocks(GameBreakOut, false);
+		CAudio_PlaySound(GameBreakOut->SfxSucces, 0);
+		return;
+	}
+	
 	for(int x = 0; x < CGameBreakOut_blockcols; x++)
 	{
 		for(int y = 0; y < CGameBreakOut_blockrows; y++)
@@ -220,19 +193,11 @@ void CGameBreakOut_updateblocks(CGameBreakOut* GameBreakOut)
 					else
 					{
 						CGameBreakOut_destroyblock(GameBreakOut,x + y * CGameBreakOut_blockcols);
-						CGameBreakOut_updateblockinfo(GameBreakOut);
 					}
 				}
 
 			}
 		}
-	}
-
-	if (GameBreakOut->blockinfo.mostleft == -1)
-	{
-		CGame_AddToScore(500);
-		CGameBreakOut_createblocks(GameBreakOut, false);
-		CAudio_PlaySound(GameBreakOut->SfxSucces, 0);
 	}
 }
 
@@ -600,8 +565,9 @@ void CGameBreakOut_UpdateLogic(CGameBreakOut* GameBreakOut)
 	GameBreakOut->leftpressed = gamepad_left() > 0;
 	GameBreakOut->apressed = gamepad_button_a() > 0;
 
-	if (get_frame_counter() % 2 == 1)
-		return;
+	if(CGameBreakOut_NumLogicFrames > 1)
+		if (get_frame_counter() % 2 == 1)
+			return;
 
 	if ((GameState == GSTitleScreenInit) || (SubGameState == SGPauseMenu) || (SubGameState == SGFrame) || (SubGameState == SGGameHelp))
 	{
@@ -616,8 +582,9 @@ void CGameBreakOut_UpdateLogic(CGameBreakOut* GameBreakOut)
 
 void CGameBreakOut_Draw(CGameBreakOut* GameBreakOut)
 {
-	if (get_frame_counter() % 2 == 0)
-		return;
+	if(CGameBreakOut_NumLogicFrames > 1)
+		if (get_frame_counter() % 2 == 0)
+			return;
 
 	if ((GameState == GSTitleScreenInit) || (SubGameState == SGPauseMenu) || (SubGameState == SGFrame) || (SubGameState == SGGameHelp))
 		return;
@@ -651,9 +618,6 @@ CGameBreakOut* Create_CGameBreakOut()
 
 	GameBreakOut->curballspeed = 0.0;
 	GameBreakOut->pattern = 0;
-	GameBreakOut->blockinfo.mostbottom = 0;
-	GameBreakOut->blockinfo.mostleft = 0;
-	GameBreakOut->blockinfo.mostright = 0;
 
 	GameBreakOut->spritescale.x = 2.5*xscale;
 	GameBreakOut->spritescale.y = 2.5*yscale;
@@ -664,6 +628,9 @@ CGameBreakOut* Create_CGameBreakOut()
 	GameBreakOut->downpressed = false;
 	GameBreakOut->leftpressed = false;
 	GameBreakOut->rightpressed = false;
+
+	GameBreakOut->BlockTzCache = NULL;
+	GameBreakOut->blocksAlive = 0;
 	for (int i= 0; i < CGameBreakOut_numblocks; i++)
 	{
 		Initialize_CSpriteObject(&GameBreakOut->blocks[i]);
@@ -682,6 +649,8 @@ CGameBreakOut* Create_CGameBreakOut()
 
 void Destroy_CGameBreakOut(CGameBreakOut* GameBreakOut)
 {
+	if(GameBreakOut->BlockTzCache)
+		free(GameBreakOut->BlockTzCache);
 	for (int i= 0; i < CGameBreakOut_numblocks; i++)
 	{
 		free(GameBreakOut->tweens[i][0]);

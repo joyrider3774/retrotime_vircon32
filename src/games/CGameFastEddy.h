@@ -551,10 +551,6 @@ void CGameFastEddy_updateplayer(CGameFastEddy* GameFastEddy)
 			(GameFastEddy->player.state != GameFastEddy_playerstateclimbdown))
 		{
 
-			//if fedebugmode and (!global.prevc.b and global.c.b) then
-			//	feenemyenablelevelend()
-			//endif
-
 			if (gamepad_button_a() == 1)
 				jump = true;
 

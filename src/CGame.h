@@ -269,7 +269,7 @@ void CGame_Init()
 	CImage_Init();
 	CSprites_Init();
 	CGame_ResetHighScores();
-	//CSprites_SetForceShowCollisionShape(debugShowCollisionShapes);
+	CSprites_SetForceShowCollisionShape(debugShowCollisionShapes);
 
 	CGame_LoadSettings();
 	CGame_LoadHighScores();
@@ -298,88 +298,84 @@ void CGame_Init()
 	//Clear score values
 	CGame_ResetScores();
 
-	CSprites_SetForceShowCollisionShape(false);
 }
 
 int[1000] DebugTmpText;
 int[10] DebugTmpNr = "test";
-		
+int frames = 0;	
 
 void CGame_MainLoop()
 {
+	//if((frames != 0) && (get_frame_counter() - frames > 16000))
+	//	exit();
 	CSprites_SpritesDrawnReset();
 	CGame_UpdateTimer();
 
+	//in vircon32 c compiler switch statements are not the same as in gcc, it does not use a look up table
+	//and the order of your case statement affects number of instructions used. Generally it does a quick check
+	//of each case statement in order and each check takes 3 asm instructions so it's wiser to put games
+	//that need more cpu usuage first or gamesstates that are les important last 
 	switch (GameState)
 	{
-		case GSIntroInit:
-		case GSIntro:
-			Intro();
-			break;
-
-		case GSSubScoreInit:
-		case GSSubScore:
-		 	SubScoreScreen();
-		 	break;
-
-		case GSTitleScreenInit:
-		case GSTitleScreen:
-		 	//to clear the game data & set NULL to ActiveGame
-		 	CGame_CreateActiveGame();
-		 	TitleScreen();
-		 	break;
-
-	 	case GSSnakeInit:
-	 	case GSRamItInit:
-	 	case GSPangInit:
-	 	case GSSpaceInvadersInit:
-	 	case GSFrogInit:
-	 	case GSEddyInit:
-	 	case GSBreakoutInit:
-	 	case GSTetrisInit:
-	 		CGame_CreateActiveGame();
-	 		switch (ActiveGameGameStateId)
-	 		{
-	 			case GSSnake:
-	 				CGameSnake_init(GameSnake);
-	 				break;
-	 			case GSRamIt:
-	 				CGameRamIt_init(GameRamIt);
-	 				break;
-	 			case GSPang:
-	 				CGamePang_init(GamePang);
-	 				break;
-	 			case GSSpaceInvaders:
-	 				CGameInvaders_init(GameInvaders);
-	 				break;
-	 			case GSFrog:
-	 				CGameFrog_init(GameFrog);
-	 				break;
-	 			case GSEddy:
-	 				CGameFastEddy_init(GameFastEddy);
-	 				break;
-	 			case GSBreakout:
-	 				CGameBreakOut_init(GameBreakOut);
-	 				break;
-	 			case GSTetris:
-	 				CGameBlockStacker_init(GameBlockStacker);
-	 				break;
-	 		}
-			CGame_ResetTimer();
-	 		CGame_StartCrossFade(ActiveGameGameStateId, SGReadyGo, 3, 500);
-	 		break;			
-	
+	 	case GSFrog:
+		case GSBreakout:
+		case GSEddy:
+	 	case GSSpaceInvaders:
+		case GSPang:
+	 	case GSTetris:
 	 	case GSSnake:
 	 	case GSRamIt:
-	 	case GSPang:
-	 	case GSSpaceInvaders:
-	 	case GSFrog:
-	 	case GSEddy:
-	 	case GSBreakout:
-	 	case GSTetris:
 	 		switch (ActiveGameGameStateId)
 	 		{
-	 			case GSSnake:
+	 			case GSFrog:
+					StartDebugSpeed(5);
+					CGameFrog_UpdateLogic(GameFrog);
+					StopDebugSpeed(5);
+					StartDebugSpeed(6);
+					CGameFrog_Draw(GameFrog);
+	 				StopDebugSpeed(6);
+					break;
+	 			case GSBreakout:
+					StartDebugSpeed(5);
+					CGameBreakOut_UpdateLogic(GameBreakOut);
+					StopDebugSpeed(5);
+					StartDebugSpeed(6);
+					CGameBreakOut_Draw(GameBreakOut);
+					StopDebugSpeed(6);
+	 				break;
+				case GSEddy:
+					StartDebugSpeed(5);	
+	 				CGameFastEddy_UpdateLogic(GameFastEddy);
+					StopDebugSpeed(5);
+					StartDebugSpeed(6);
+	 				CGameFastEddy_Draw(GameFastEddy);
+					StopDebugSpeed(6);
+	 				break;
+	 			case GSSpaceInvaders:
+	 				StartDebugSpeed(5);
+					CGameInvaders_UpdateLogic(GameInvaders);
+	 				StopDebugSpeed(5);
+					StartDebugSpeed(6);
+					CGameInvaders_Draw(GameInvaders);
+					StopDebugSpeed(6);
+	 				break;
+				case GSPang:
+					StartDebugSpeed(5);
+	 				CGamePang_UpdateLogic(GamePang);
+					StopDebugSpeed(5);
+					StartDebugSpeed(6);
+	 				CGamePang_Draw(GamePang);
+					StopDebugSpeed(6);
+	 				break;
+				case GSTetris:
+					StartDebugSpeed(5);
+	 				CGameBlockStacker_UpdateLogic(GameBlockStacker);
+					StopDebugSpeed(5);
+					StartDebugSpeed(6);
+	 				CGameBlockStacker_Draw(GameBlockStacker);
+					StopDebugSpeed(6);
+	 				break;
+				case GSSnake:
 					StartDebugSpeed(5);
 	 				CGameSnake_UpdateLogic(GameSnake);
 					StopDebugSpeed(5);
@@ -395,58 +391,76 @@ void CGame_MainLoop()
 	 				CGameRamIt_Draw(GameRamIt);
 					StopDebugSpeed(6);
 	 				break;
-	 			case GSPang:
-					StartDebugSpeed(5);
-	 				CGamePang_UpdateLogic(GamePang);
-					StopDebugSpeed(5);
-					StartDebugSpeed(6);
-	 				CGamePang_Draw(GamePang);
-					StopDebugSpeed(6);
-	 				break;
-	 			case GSSpaceInvaders:
-	 				StartDebugSpeed(5);
-					CGameInvaders_UpdateLogic(GameInvaders);
-	 				StopDebugSpeed(5);
-					StartDebugSpeed(6);
-					CGameInvaders_Draw(GameInvaders);
-					StopDebugSpeed(6);
-	 				break;
-	 			case GSFrog:
-					StartDebugSpeed(5);
-					CGameFrog_UpdateLogic(GameFrog);
-					StopDebugSpeed(5);
-					StartDebugSpeed(6);
-					CGameFrog_Draw(GameFrog);
-	 				StopDebugSpeed(6);
-					break;
-	 			case GSEddy:
-					StartDebugSpeed(5);		
-	 				CGameFastEddy_UpdateLogic(GameFastEddy);
-					StopDebugSpeed(5);
-					StartDebugSpeed(6);
-	 				CGameFastEddy_Draw(GameFastEddy);
-					StopDebugSpeed(6);
-	 				break;
-	 			case GSBreakout:
-					StartDebugSpeed(5);
-					CGameBreakOut_UpdateLogic(GameBreakOut);
-					StopDebugSpeed(5);
-					StartDebugSpeed(6);
-					CGameBreakOut_Draw(GameBreakOut);
-					StopDebugSpeed(6);
-	 				break;
-	 			case GSTetris:
-					StartDebugSpeed(5);
-	 				CGameBlockStacker_UpdateLogic(GameBlockStacker);
-					StopDebugSpeed(5);
-					StartDebugSpeed(6);
-	 				CGameBlockStacker_Draw(GameBlockStacker);
-					StopDebugSpeed(6);
-	 				break;
 	 			default:
 	 				break;
 	 		}
 	 		break;
+		
+		case GSFrogInit:
+	 	case GSBreakoutInit:
+	 	case GSEddyInit:
+	 	case GSSpaceInvadersInit:
+	 	case GSPangInit:
+		case GSTetrisInit:
+		case GSSnakeInit:
+	 	case GSRamItInit:
+			StartDebugSpeed(4);
+	 		if(ActiveGameGameStateId == -1)
+			{
+				frames = get_frame_counter();
+				ResetAllDebugSpeedMaxValues();
+	 			CGame_CreateActiveGame();
+				break;
+			}
+	 		switch (ActiveGameGameStateId)
+	 		{
+	 			case GSFrog:
+	 				CGameFrog_init(GameFrog);
+	 				break;
+	 			case GSBreakout:
+	 				CGameBreakOut_init(GameBreakOut);
+	 				break;
+				case GSEddy:
+	 				CGameFastEddy_init(GameFastEddy);
+	 				break;
+	 			case GSSpaceInvaders:
+	 				CGameInvaders_init(GameInvaders);
+	 				break;
+	 			case GSPang:
+	 				CGamePang_init(GamePang);
+	 				break;
+	 			case GSTetris:
+	 				CGameBlockStacker_init(GameBlockStacker);
+	 				break;
+				case GSSnake:
+	 				CGameSnake_init(GameSnake);
+	 				break;	 			
+				case GSRamIt:
+	 				CGameRamIt_init(GameRamIt);
+	 				break;	 			
+	 		}
+			CGame_ResetTimer();
+	 		CGame_StartCrossFade(ActiveGameGameStateId, SGReadyGo, 3, 500);
+			StopDebugSpeed(4);
+	 		break;	
+
+		case GSSubScoreInit:
+		case GSSubScore:
+		 	SubScoreScreen();
+		 	break;
+
+		case GSTitleScreenInit:
+		case GSTitleScreen:
+		 	//to clear the game data & set NULL to ActiveGame
+		 	CGame_CreateActiveGame();
+		 	TitleScreen();
+		 	break;
+
+		case GSIntroInit:
+		case GSIntro:
+			Intro();
+			break;
+	
 	 	default:
 	 		break;
 	}
@@ -633,6 +647,9 @@ void CGame_MainLoop()
 		PDebugText = faststrcat(PDebugText,"\n");
 		
 		set_multiply_color(make_color_rgba(255,0,255,255));
+		int[10] Nr;
+		itoa(get_frame_counter()-frames, Nr, 10);
+		print_at(screen_width - strlen(Nr) * bios_character_width,bios_character_height, Nr);
 		print_at(0,bios_character_height,DebugTmpText);
 		set_multiply_color(color_white);
 	}

@@ -928,7 +928,6 @@ void CGameFastEddy_createfloors(CGameFastEddy* GameFastEddy)
 			GameFastEddy->floors[i].spr->sxscale =  scale.x;
 			GameFastEddy->floors[i].spr->syscale =  scale.y;
 			tilenr = 37;
-			}
 			CSprites_SetSpriteAnimation(GameFastEddy->floors[i].spr, tilenr, tilenr, 0);
 			i += 1;
 		}

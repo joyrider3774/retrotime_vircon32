@@ -429,6 +429,8 @@ void CAudio_PlaySound(int SoundID, int loops)
 	for (int i = 1; i < sound_channels; i++)
 		if(get_channel_state(i) == channel_stopped)
 		{
+			select_sound(*CAudio_Sounds[SoundID]);
+			set_sound_loop(loops == -1);
 			assign_channel_sound(i, *CAudio_Sounds[SoundID]);
 			play_channel(i);
 			break;

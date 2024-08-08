@@ -38,7 +38,7 @@ struct SObjectInfo {
 };
 
 #define EnablePlayerDeath true
-#define CGameFrog_ExtraScale 1.75
+#define CGameFrog_ExtraScale 1.5
 #define CGameFrog_NumLogicFrames 2
 #define CGameFrog_playerspeed 16.0*3.0*CGameFrog_ExtraScale*yscale
 #define CGameFrog_globalworldspeed 0.5*CGameFrog_ExtraScale*yscale*CGameFrog_NumLogicFrames
@@ -74,7 +74,7 @@ struct SObjectInfo {
 
 #define CGameFrog_lenlevelincspeeds 5
 
-#define CGameFrog_numcols (int)(14 / CGameFrog_ExtraScale)
+#define CGameFrog_numcols (int)(15 / CGameFrog_ExtraScale)
 #define CGameFrog_generatorrows 1
 #define CGameFrog_maxrowsbeforesafetyrow 4
 // or screensheight / playerspeed ceiled
@@ -90,7 +90,7 @@ struct SObjectInfo {
 #define CGameFrog_rowtypewaterend 2
 #define CGameFrog_rowtyperoadstart 3
 #define CGameFrog_rowtyperoadend 7
-#define CGameFrog_maxobjects 140
+#define CGameFrog_maxobjects 190
 
 #define CGameFrog_lenrowtypes 9
 

@@ -156,7 +156,7 @@ void TitleScreen()
 				CAudio_PlaySound(SfxBack, 0);
 				CGame_StartFade();
 				CurrentMainMenu = -1;
-				CGame_SaveSettings();
+				CGame_SaveHighScoresSettings();
 			}
 
 			if ((gamepad_button_start() == 1) || (gamepad_button_a() == 1))
@@ -168,11 +168,11 @@ void TitleScreen()
 					case OMBack:
 						CurrentMainMenu = -1;
 						CGame_StartFade();
-						CGame_SaveSettings();
+						CGame_SaveHighScoresSettings();
 						break;
 					case OMResetHighScores:
 						CGame_ResetHighScores();
-						CGame_SaveHighScores();
+						CGame_SaveHighScoresSettings();
 						break;
 					case OMSoundVol:
 						CAudio_IncVolumeSound();

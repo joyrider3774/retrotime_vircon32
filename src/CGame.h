@@ -116,7 +116,7 @@ void CGame_UpdateTimer()
 	}
 }
 
-void CGame_CreateActiveGame()
+void CGame_DestroyActiveGame()
 {
 	switch(ActiveGameGameStateId)
 	{
@@ -124,7 +124,7 @@ void CGame_CreateActiveGame()
 	 		CGameSnake_deinit(GameSnake);
 	 		Destroy_CGameSnake(GameSnake);
 	 		ActiveGameGameStateId = -1;
-	 		break;
+			break;
 	 	case GSRamIt:
 	 		CGameRamIt_deinit(GameRamIt);
 	 		Destroy_CGameRamIt(GameRamIt);
@@ -160,11 +160,14 @@ void CGame_CreateActiveGame()
 	 		Destroy_CGameBlockStacker(GameBlockStacker);
 	 		ActiveGameGameStateId = -1;
 	 		break;
-	 	default:			
+	 	default:
 	 		ActiveGameGameStateId = -1;
-	 		break;
+			break;
 	}
+}
 
+void CGame_CreateActiveGame()
+{
 	switch (GameState)
 	{
 	 	case GSSnakeInit:
@@ -250,8 +253,7 @@ void CGame_DeInit()
 	CGame_UnLoadMusic();
 	CGame_UnLoadGraphics();
 	CGame_UnLoadSound();
-	CGame_SaveSettings();
-	CGame_SaveHighScores();
+	CGame_SaveHighScoresSettings();
 
 	CAudio_DeInit();
 	CFont_DeInit();
@@ -264,6 +266,8 @@ void CGame_Init()
 	//srand(get_time());
 	srand(0);
 	initDebugSpeed();
+	memset( &GameSignature, 0, sizeof( game_signature ) );
+    strcpy( GameSignature, "RETROTIME_V1" );
 	CAudio_Init();
 	CFont_Init();
 	CImage_Init();
@@ -271,8 +275,7 @@ void CGame_Init()
 	CGame_ResetHighScores();
 	CSprites_SetForceShowCollisionShape(debugShowCollisionShapes);
 
-	CGame_LoadSettings();
-	CGame_LoadHighScores();
+	CGame_LoadHighScoresSettings();
 	CGame_LoadGraphics();
 	CGame_LoadMusic();
 	CGame_LoadSound();
@@ -404,13 +407,16 @@ void CGame_MainLoop()
 		case GSSnakeInit:
 	 	case GSRamItInit:
 			StartDebugSpeed(4);
+			//no game created yet or it was destroyed
 	 		if(ActiveGameGameStateId == -1)
 			{
+				CGame_CreateActiveGame();
 				frames = get_frame_counter();
 				ResetAllDebugSpeedMaxValues();
-	 			CGame_CreateActiveGame();
+				//return so game creation & game init is in seperate frame
 				break;
 			}
+			//game had been created init it
 	 		switch (ActiveGameGameStateId)
 	 		{
 	 			case GSFrog:
@@ -436,22 +442,29 @@ void CGame_MainLoop()
 	 				break;	 			
 				case GSRamIt:
 	 				CGameRamIt_init(GameRamIt);
-	 				break;	 			
+	 				break;
 	 		}
-			CGame_ResetTimer();
-	 		CGame_StartCrossFade(ActiveGameGameStateId, SGReadyGo, 3);
+			//game was inited switch to non init gamestate
+			if (ActiveGameGameStateId != -1)
+			{
+				CGame_ResetTimer();
+	 			CGame_StartCrossFade(ActiveGameGameStateId, SGReadyGo, 3);
+			}
 			StopDebugSpeed(4);
 	 		break;	
 
 		case GSSubScoreInit:
 		case GSSubScore:
-		 	SubScoreScreen();
+			//subscorescreen returns false if we exit the state
+			if (SubScoreScreen())
+				CGame_DestroyActiveGame();
 		 	break;
 
 		case GSTitleScreenInit:
 		case GSTitleScreen:
-		 	//to clear the game data & set NULL to ActiveGame
-		 	CGame_CreateActiveGame();
+		 	//to clear the game data & set ActiveGameGameStateId to -1
+			//if we quited from pause menu
+		 	CGame_DestroyActiveGame();
 		 	TitleScreen();
 		 	break;
 

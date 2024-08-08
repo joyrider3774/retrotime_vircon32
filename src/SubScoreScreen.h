@@ -54,8 +54,9 @@ void InitSubScoreScreen()
 	CAudio_PlaySound(SfxScore, 0);
 }
 
-void SubScoreScreen()
+bool SubScoreScreen()
 {
+	bool result = false;
 	if (GameState == GSSubScoreInit)
 	{
 		InitSubScoreScreen();
@@ -212,7 +213,12 @@ void SubScoreScreen()
 				PTextTmp = faststrcat(PTextTmp, GSGames[Game + 1].name);
 			}
 			else
-				PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Press (A) for titlescreen");
+			{
+				PTextTmp = TextTmp; 
+				*PTextTmp = 0; 
+				PTextTmp = faststrcat(PTextTmp, "Press (A) for titlescreen");
+			}
+
 			int Texw = CFont_TextWidth("Roboto-Regular", (int)(34.0 * yscale), TextTmp);
 			CFont_WriteText("Roboto-Regular", (int)(34.0 * yscale), TextTmp, (int)((ScreenWidth - Texw) / 2.0), (int)(630.0 * yscale), color_white);			
 		}
@@ -264,8 +270,11 @@ void SubScoreScreen()
 		}
 
 		if (GameState == GSTitleScreenInit)
-			CGame_SaveHighScores();
+			CGame_SaveHighScoresSettings();
+		
+		result = true;
 	}
+	return result;
 }
 
 #endif

@@ -2,6 +2,8 @@
 #define COMMON_H
 
 #include "string.h"
+#include "memcard.h"
+#include "CAudio.h"
 
 #define debugInfoStats false
 #define debugShowCollisionShapes false
@@ -323,6 +325,11 @@ int SubStateTime;
 int GFXFrameID, GFXMedal, GFXPrevewID, GFXPreviewID2;
 int CurrentGameMusicID;
 
+game_signature GameSignature;
+#define HighScoresSavePosition 100
+#define SoundVolumeSavePosition (sizeof(game_signature))
+#define MusicVolumeSavePosition (SoundVolumeSavePosition + sizeof(int))
+
 float getCurrentTimeMilliseconds()
 {
 	return get_frame_counter() * 1000.0/60.0;
@@ -344,6 +351,22 @@ void CGame_StartCrossFade(int SetGameState, int SetNextSubState, float SetNextSu
 	return;
 }
 
+void CGame_ResetHighScores()
+{
+	for(int x = 0; x < Games; x++)
+		for(int y = 0; y < Modes; y++)
+			HighScores[x][y] = 0;
+	RetroCarouselHighScore = 0;
+}
+
+void CGame_ResetScores()
+{
+	for(int x = 0; x < Games; x++)
+		for(int y = 0; y < Modes; y++)
+			Scores[x][y] = 0;
+	RetroCarouselScore = 0;
+}
+
 void CGame_AddToScore(int Value)
 {
 	int AScore = Value;
@@ -361,101 +384,39 @@ void CGame_DrawTitleBackground()
 	clear_screen (color_black);
 }
 
-void CGame_LoadHighScores()
+void CGame_LoadHighScoresSettings()
 {
-	// SDFile *ScoreFile;
-
-	// ScoreFile = pd->file->open("retrotimesscores", kFileReadData);
-	// if (ScoreFile)
-	// {
-	// 	pd->file->read(ScoreFile, &RetroCarouselHighScore, sizeof(int));
-	// 	for (int i = 0; i < Games; i++)
-	// 		for (int j = 0; j < Modes; j++)
-	// 		{
-	// 			pd->file->read(ScoreFile, &HighScores[i][j], sizeof(int));
-	// 		}
-	// 	pd->file->close(ScoreFile);
-	// }
-	// else
-	// {
-	// 	CGame_ResetHighScores();
-	// }
+	int VolumeMusic = 128, VolumeSound = 128;
+	CGame_ResetHighScores();
+	if(card_is_connected())
+		if(card_signature_matches(&GameSignature))
+		{
+			card_read_data(&VolumeMusic, MusicVolumeSavePosition, sizeof(sizeof (int)));
+			card_read_data(&VolumeSound, SoundVolumeSavePosition, sizeof(sizeof (int)));
+			card_read_data(&RetroCarouselHighScore, HighScoresSavePosition  , sizeof(sizeof (RetroCarouselHighScore)));
+			for (int i = 0; i < Games; i++)
+				for (int j = 0; j < Modes; j++)
+				card_read_data(&HighScores[i][j], HighScoresSavePosition  + sizeof(RetroCarouselHighScore) +  (i * sizeof(HighScores[i][j]) * Modes + j) , sizeof(HighScores[i][j]));
+		}
+	CAudio_SetVolumeMusic(VolumeMusic);
+	CAudio_SetVolumeSound(VolumeSound);
 }
 
-void CGame_SaveHighScores()
+void CGame_SaveHighScoresSettings()
 {
-	// SDFile *ScoreFile;
-
-	// ScoreFile = pd->file->open("retrotimesscores", kFileWrite);
-	// if (ScoreFile)
-	// {
-	// 	pd->file->write(ScoreFile, &RetroCarouselHighScore, sizeof(int));
-	// 	for (int i = 0; i < Games; i++)
-	// 		for (int j = 0; j < Modes; j++)
-	// 			pd->file->write(ScoreFile, &HighScores[i][j], sizeof(int));
-	// 	pd->file->close(ScoreFile);
-	// }
-}
-
-void CGame_LoadSettings()
-{
-	// SDFile *SettingsFile;
-
-	// SettingsFile = pd->file->open("retrotimesettings", kFileReadData);
-	// if (SettingsFile)
-	// {
-	// 	int VolumeMusic, VolumeSound;
-	// 	if (pd->file->read(SettingsFile, &VolumeMusic, sizeof(int)) > 0)
-	// 	{
-	// 		CAudio_SetVolumeMusic(VolumeMusic);
-	// 	}
-	// 	else
-	// 		CAudio_SetVolumeMusic(128);
-		
-	// 	if (pd->file->read(SettingsFile, &VolumeSound, sizeof(int)) > 0)
-	// 	{
-	// 		CAudio_SetVolumeSound(VolumeSound);
-	// 	}
-	// 	else
-	// 		CAudio_SetVolumeSound(128);
-	// 	pd->file->close(SettingsFile);
-	// }
-	// else
-	// {
-	// 	CAudio_SetVolumeMusic(128);
-	// 	CAudio_SetVolumeSound(128);
-	// }
-}
-
-void CGame_SaveSettings()
-{
-	// SDFile *SettingsFile;
-
-	// SettingsFile = pd->file->open("retrotimesettings", kFileWrite);
-	// if (SettingsFile)
-	// {
-	// 	int VolumeMusic = CAudio_GetVolumeMusic();
-	// 	int VolumeSound = CAudio_GetVolumeSound();
-	// 	pd->file->write(SettingsFile, &VolumeMusic, sizeof(int));
-	// 	pd->file->write(SettingsFile, &VolumeSound, sizeof(int));
-	// 	pd->file->close(SettingsFile);
-	// }
-}
-
-void CGame_ResetHighScores()
-{
-	for(int x = 0; x < Games; x++)
-		for(int y = 0; y < Modes; y++)
-			HighScores[x][y] = 0;
-	RetroCarouselHighScore = 0;
-}
-
-void CGame_ResetScores()
-{
-	for(int x = 0; x < Games; x++)
-		for(int y = 0; y < Modes; y++)
-			Scores[x][y] = 0;
-	RetroCarouselScore = 0;
+	if(card_is_connected())
+		if(card_is_empty() || card_signature_matches( &GameSignature ))
+		{
+			card_write_signature(&GameSignature);
+			int VolumeMusic = CAudio_GetVolumeMusic();
+			int VolumeSound = CAudio_GetVolumeSound();
+			card_write_data(&VolumeMusic, MusicVolumeSavePosition, sizeof(sizeof (VolumeMusic)));
+			card_write_data(&VolumeSound, SoundVolumeSavePosition, sizeof(sizeof (VolumeSound)));
+			card_write_data(&RetroCarouselHighScore, HighScoresSavePosition  , sizeof(sizeof (RetroCarouselHighScore)));
+			for (int i = 0; i < Games; i++)
+				for (int j = 0; j < Modes; j++)
+				card_write_data(&HighScores[i][j], HighScoresSavePosition  + sizeof(RetroCarouselHighScore) +  (i * sizeof(HighScores[i][j]) * Modes + j) , sizeof (HighScores[i][j]));
+		}
 }
 
 int* faststrcat( int* dest, int* src )

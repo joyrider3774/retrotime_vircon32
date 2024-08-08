@@ -17,8 +17,6 @@ int SelOptions = 0;
 
 int menutextsize = (int)(60.0*yscale);
 int menuspacing = (int)(90.0*yscale);
-int rcolor = 64;
-int rdcolor = 1;
 
 void ResetGlobalsTitleScreen()
 {
@@ -60,7 +58,7 @@ void TitleScreen()
 
 			selectedmenu = OMOptionMenus[SelOptions].menu;
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Options");
-			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text),(int)(525.0*xscale), (int)(50.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, (int)(525.0*xscale), (int)(50.0*yscale), color);
 			int menu;
 
 			for(int i = 0; i < OptionMenus; i++)
@@ -78,24 +76,23 @@ void TitleScreen()
 						itoa((int)(CAudio_GetVolumeSound()*100/128), Nr, 10);
 						PText = faststrcat(PText, Nr);
 						PText = faststrcat(PText, "%");
-						CFont_WriteText("Roboto-Regular", menutextsize, Text, strlen(Text), (int)(300.0*xscale), (int)(185.0*yscale + i * menuspacing), 0, color);
+						CFont_WriteText("Roboto-Regular", menutextsize, Text, (int)(300.0*xscale), (int)(185.0*yscale + i * menuspacing), color);
 						break;
 					case OMMusicVol:
 						PText = Text; *PText = 0; PText = faststrcat(PText, OMOptionMenus[menu].name);
 						itoa((int)(CAudio_GetVolumeMusic()*100/128), Nr, 10);
 						PText = faststrcat(PText, Nr);
 						PText = faststrcat(PText, "%");
-						CFont_WriteText("Roboto-Regular", menutextsize, Text, strlen(Text), (int)(300.0*xscale), (int)(185.0*yscale + i * menuspacing), 0, color);
+						CFont_WriteText("Roboto-Regular", menutextsize, Text, (int)(300.0*xscale), (int)(185.0*yscale + i * menuspacing), color);
 						break;
 					default:
-						CFont_WriteText("Roboto-Regular", menutextsize, OMOptionMenus[menu].name, strlen(OMOptionMenus[menu].name),(int) (300.0*xscale),
-							(int)(185.0*yscale + i * menuspacing), 0, color);
+						CFont_WriteText("Roboto-Regular", menutextsize, OMOptionMenus[menu].name, (int) (300.0*xscale),	(int)(185.0*yscale + i * menuspacing), color);
 						break;
 				}
 			}
 			color = color_white;
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Use dpad to switch between options. (A) to select and (B) for back");
-			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text), (int)(90.0*xscale), (int)(630.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, (int)(90.0*xscale), (int)(630.0*yscale), color);
 			
 			if (gamepad_down() == 1)
 			{
@@ -195,7 +192,7 @@ void TitleScreen()
 		case MMHelp:
 		{
 			PText = Text; *PText = 0; PText = faststrcat(PText,"Help");
-			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(560.0*xscale), (int)(50.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, (int)(560.0*xscale), (int)(50.0*yscale), color);
 			
 
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Retro time is a collection of retro games, each playable in different\n"
@@ -209,8 +206,8 @@ void TitleScreen()
 				"\n"
 				"There are 3 game modes: Retro Carousel, Time Attack and\n"
 				"Lives mode.");
-			int tw = CFont_TextWidth("Roboto-Regular", (int)(38.0*yscale), Text, strlen(Text));
-			CFont_WriteText("Roboto-Regular", (int)(38.0*yscale), Text, strlen(Text), (int)((ScreenWidth-tw)/2.0),(int)(140.0*yscale), 0, color);
+			int tw = CFont_TextWidth("Roboto-Regular", (int)(38.0*yscale), Text);
+			CFont_WriteText("Roboto-Regular", (int)(38.0*yscale), Text, (int)((ScreenWidth-tw)/2.0),(int)(140.0*yscale), color);
 
 			if ((gamepad_button_a() == 1) || (gamepad_button_start() == 1) || (gamepad_button_b() == 1))
 			{
@@ -223,7 +220,7 @@ void TitleScreen()
 		case MMCredits:
 		{
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Credits");
-			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(500.0*xscale),(int)(50.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, (int)(500.0*xscale),(int)(50.0*yscale), color);
 
 			PText = Text; *PText = 0; PText = faststrcat(PText,
 			"Block Stacker code is heavily inspired on this video from one lone\n"
@@ -244,8 +241,8 @@ void TitleScreen()
 			"https://github.com/joyrider3774/RetroTime or\n"
 			"https://joyrider3774.itch.io/retrotime\n");
 
-			int tw = CFont_TextWidth("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text));
-			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text), (int)((ScreenWidth - tw) / 2.0), (int)(140.0*yscale), 0, color);			
+			int tw = CFont_TextWidth("Roboto-Regular", (int)(34.0*yscale), Text);
+			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, (int)((ScreenWidth - tw) / 2.0), (int)(140.0*yscale), color);			
 
 			if ((gamepad_button_a() == 1) || (gamepad_button_start() == 1) || (gamepad_button_b() == 1))
 			{
@@ -258,15 +255,15 @@ void TitleScreen()
 		case MMHighScores:
 		{
 			PText = Text; *PText = 0; PText = faststrcat(PText,"High Scores");
-			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(400.0*xscale), (int)(50.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, (int)(400.0*xscale), (int)(50.0*yscale), color);
 			
 
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Retro Carousel Total highscore: ");
 			itoa(RetroCarouselHighScore, Nr, 10);
 			PText = faststrcat(PText, Nr);
-			CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), Text, strlen(Text),(int)(150.0*xscale),(int)(195.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), Text,(int)(150.0*xscale),(int)(195.0*yscale), color);
 			
-			CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), GSGames[Game].name, strlen(GSGames[Game].name),(int)(150.0*xscale),(int)(290.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), GSGames[Game].name,(int)(150.0*xscale),(int)(290.0*yscale), color);
 
 			CImage_DrawImageFuze(GFXPrevewID, Game, false, (int)(150.0*xscale), (int)(355.0*yscale), 0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 
@@ -276,11 +273,11 @@ void TitleScreen()
 				PText = faststrcat(PText,": ");
 				itoa(HighScores[Game][mode], Nr, 10);
 				PText = faststrcat(PText, Nr);
-				CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), Text, strlen(Text), (int)(500.0*xscale), (int)((350 + mode * 46)*yscale), 0, color);				
+				CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), Text, (int)(500.0*xscale), (int)((350 + mode * 46)*yscale), color);				
 			}
 
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Use dpad or (A) to switch between games. (B) for back");
-			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text), (int)(200.0*xscale),(int)(630.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, (int)(200.0*xscale),(int)(630.0*yscale), color);
 			
 			 if (gamepad_button_b() == 1)
 			 {
@@ -312,11 +309,11 @@ void TitleScreen()
 		{
 			int gamestate = GSGames[Game].state;
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Select Game");
-			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(465.0*xscale), (int)(50.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, (int)(465.0*xscale), (int)(50.0*yscale), color);
 			
 
 			PText = Text; *PText = 0; PText = faststrcat(PText, GSGames[Game].name);
-			CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), Text, strlen(Text), (int)(50.0*xscale), (int)(165.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(50.0*yscale), Text, (int)(50.0*xscale), (int)(165.0*yscale), color);
 			
 			CImage_DrawImageFuze(GFXPrevewID, Game, false, (int)(50.0*xscale), (int)(230.0*yscale), 0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 
@@ -325,12 +322,12 @@ void TitleScreen()
 			itoa(HighScores[Game][GameMode], Nr, 10);
 			PText = faststrcat(PText, Nr);
 
-			CFont_WriteText("Roboto-Regular", (int)(40.0*yscale), Text, strlen(Text), (int)(400.0*xscale), (int)(170.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(40.0*yscale), Text, (int)(400.0*xscale), (int)(170.0*yscale), color);
 			
-			CFont_WriteText("Roboto-Regular", (int)(28.0*yscale), GSGames[Game].description, strlen(GSGames[Game].description), (int)(400.0*xscale), (int)(230.0*yscale), 2, color);
+			CFont_WriteText("Roboto-Regular", (int)(28.0*yscale), GSGames[Game].description, (int)(400.0*xscale), (int)(230.0*yscale), color);
 
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Use dpad to switch between games. (A) to select and (B) for back");
-			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text), (int)(90.0*xscale), (int)(630.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, (int)(90.0*xscale), (int)(630.0*yscale), color);
 			
 			if (gamepad_button_b() == 1)
 			{
@@ -370,7 +367,7 @@ void TitleScreen()
 		case MMSelectGameMode:
 		{
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Select Game Mode");
-			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(285.0*xscale), (int)(50.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, (int)(285.0*xscale), (int)(50.0*yscale), color);
 			
 			int ModeIterator;
 			for(int i = 0; i < Modes; i++)
@@ -381,15 +378,14 @@ void TitleScreen()
 				else
 					color = color_gray;
 
-				CFont_WriteText("Roboto-Regular", menutextsize, GMModes[i].name, strlen(GMModes[i].name), (int)(470.0*xscale), (int)(135.0*yscale + i * menuspacing), 0, color);
+				CFont_WriteText("Roboto-Regular", menutextsize, GMModes[i].name, (int)(470.0*xscale), (int)(135.0*yscale + i * menuspacing), color);
 			}
 			color = color_white;
 
-			CFont_WriteText("Roboto-Regular", (int)(40.0*yscale), GMModes[GameMode].description, strlen(GMModes[GameMode].description),
-				(int)(90.0*xscale),(int)(400.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(40.0*yscale), GMModes[GameMode].description,(int)(90.0*xscale),(int)(400.0*yscale), color);
 
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Use dpad to switch between game modes. (A) to select and (B) for back");
-			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, strlen(Text), (int)(90.0*xscale), (int)(630.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, (int)(90.0*xscale), (int)(630.0*yscale), color);
 			
 			if (gamepad_down() == 1)
 			{
@@ -437,7 +433,7 @@ void TitleScreen()
 			SelMenu = MMMainMenus[SelectedMenu].menu;
 
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Retro Time");
-			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, strlen(Text), (int)(465.0*xscale), (int)(50.0*yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(80.0*yscale), Text, (int)(465.0*xscale), (int)(50.0*yscale), color);
 			
 			int MenuIterator;
 			for (int i = 0; i < MainMenus; i++)
@@ -447,7 +443,7 @@ void TitleScreen()
 					color = color_white;
 				else
 					color = color_gray;
-				CFont_WriteText("Roboto-Regular", menutextsize, MMMainMenus[i].name, strlen(MMMainMenus[i].name), (int)(500.0*xscale), (int)(180.0*yscale + i * menuspacing), 0, color);
+				CFont_WriteText("Roboto-Regular", menutextsize, MMMainMenus[i].name, (int)(500.0*xscale), (int)(180.0*yscale + i * menuspacing), color);
 			}
 			color = color_white;
 

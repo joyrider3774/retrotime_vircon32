@@ -53,7 +53,7 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 		{
 
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Paused");
-			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), Text, strlen(Text), (int)(510.0 * xscale), (int)(50.0 * yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), Text, (int)(510.0 * xscale), (int)(50.0 * yscale), color);
 			int menu;
 
 			for (int i = 0; i < CGameBase_maxmenus; i++)
@@ -72,7 +72,7 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 						itoa((int)(CAudio_GetVolumeSound() * 100.0 / 128.0), Nr, 10);
 						PText = faststrcat(PText, Nr);
 						PText = faststrcat(PText, " %"); 
-						CFont_WriteText("Roboto-Regular", CGameBase_menutextsize, Text, strlen(Text), (int)(300.0 * xscale), (int)(185.0 * yscale + i * CGameBase_menuspacing), 0, color);
+						CFont_WriteText("Roboto-Regular", CGameBase_menutextsize, Text, (int)(300.0 * xscale), (int)(185.0 * yscale + i * CGameBase_menuspacing), color);
 						break;
 					case PMMusicVol:
 						PText = Text; *PText = 0; PText = faststrcat(PText, PMPauseMenus[menu].name);
@@ -80,27 +80,27 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 						itoa((int)(CAudio_GetVolumeMusic() * 100.0 / 128.0), Nr, 10);
 						PText = faststrcat(PText, Nr);
 						PText = faststrcat(PText, " %"); 
-						CFont_WriteText("Roboto-Regular", CGameBase_menutextsize, Text, strlen(Text), (int)(300.0 * xscale), (int)(185.0 * yscale + i * CGameBase_menuspacing), 0, color);
+						CFont_WriteText("Roboto-Regular", CGameBase_menutextsize, Text, (int)(300.0 * xscale), (int)(185.0 * yscale + i * CGameBase_menuspacing), color);
 						break;
 					default:
-						CFont_WriteText("Roboto-Regular", CGameBase_menutextsize, PMPauseMenus[menu].name, strlen(PMPauseMenus[menu].name),(int)(300.0 * xscale),
-							(int)(185.0 * yscale + i * CGameBase_menuspacing), 0, color);
+						CFont_WriteText("Roboto-Regular", CGameBase_menutextsize, PMPauseMenus[menu].name, (int)(300.0 * xscale),
+							(int)(185.0 * yscale + i * CGameBase_menuspacing), color);
 						break;
 				}
 			}
 
 			color = color_white;
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Use dpad to switch between options. (A) to select and (B) for back");
-			CFont_WriteText("Roboto-Regular", (int)(34.0 * yscale), Text, strlen(Text), (int)(90.0 * xscale), (int)(630.0 * yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(34.0 * yscale), Text, (int)(90.0 * xscale), (int)(630.0 * yscale), color);
 		}
 
 		if (SubGameState == SGGameHelp)
 		{
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Game Help");
-			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), Text, strlen(Text), (int)(485.0 * xscale), (int)(50.0 * yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), Text, (int)(485.0 * xscale), (int)(50.0 * yscale), color);
 			
 			PText = Text; *PText = 0; PText = faststrcat(PText, GSGames[Game].name);
-			CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), Text, strlen(Text),(int)(75.0 * xscale), (int)(150.0 * yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), Text, (int)(75.0 * xscale), (int)(150.0 * yscale), color);
 
 
 			PText = Text; *PText = 0; PText = faststrcat(PText,GSGames[Game].name);
@@ -109,13 +109,13 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 			PText = faststrcat(PText," High Score: ");
 			itoa(HighScores[Game][GameMode], Nr, 10);
 			PText = faststrcat(PText, Nr);
-			CFont_WriteText("Roboto-Regular", (int)(38.0 * yscale), Text, strlen(Text), (int)(75.0 * xscale), (int)(210.0 * yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(38.0 * yscale), Text, (int)(75.0 * xscale), (int)(210.0 * yscale), color);
 
 			PText = Text; *PText = 0; PText = faststrcat(PText, GSGames[Game].description);
-			CFont_WriteText("Roboto-Regular", (int)(38.0 * yscale), Text, strlen(Text), (int)(75.0 * xscale), (int)(255.0 * yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(38.0 * yscale), Text, (int)(75.0 * xscale), (int)(255.0 * yscale), color);
 			
 			PText = Text; *PText = 0; PText = faststrcat(PText, "Press (A) or (B) for back");
-			CFont_WriteText("Roboto-Regular", (int)(34.0 * yscale), Text, strlen(Text), (int)(485.0 * xscale),(int)(630.0 * yscale), 0, color);
+			CFont_WriteText("Roboto-Regular", (int)(34.0 * yscale), Text, (int)(485.0 * xscale),(int)(630.0 * yscale), color);
 		}
 
 		if (SubGameState == SGGameHelp)
@@ -326,22 +326,22 @@ void CGameBase_DrawScoreBar(CGameBase* GameBase)
 		}
 			
 	}
-	CFont_WriteText("Roboto-Regular", 17, Text, strlen(Text), 0, 0, 0, color_white);
+	CFont_WriteText("Roboto-Regular", 17, Text, 0, 0, color_white);
 }
 
 void CGameBase_DrawSubstateText(CGameBase* GameBase)
 {
-	int w = CFont_TextWidth("Roboto-Regular", 40, GameBase->SubStateText, strlen(GameBase->SubStateText));
-	CFont_WriteText("Roboto-Regular", 40, GameBase->SubStateText, strlen(GameBase->SubStateText), (int)(-1.0 + GameBase->screenleft + ((GameBase->screenright - GameBase->screenleft) / 2.0) - w / 2.0),
-		(int)(-1.0 + GameBase->screentop + ((GameBase->screenbottom - GameBase->screentop) / 2.0) - 110.0 * xscale), 0, color_black);
-	CFont_WriteText("Roboto-Regular", 40, GameBase->SubStateText, strlen(GameBase->SubStateText), (int)(-1.0 + GameBase->screenleft + ((GameBase->screenright - GameBase->screenleft) / 2.0) - w / 2.0),
-		(int)(1.0 + GameBase->screentop + ((GameBase->screenbottom - GameBase->screentop) / 2.0) - 110.0 * xscale), 0, color_black);
-	CFont_WriteText("Roboto-Regular", 40, GameBase->SubStateText, strlen(GameBase->SubStateText), (int)(1.0 + GameBase->screenleft + ((GameBase->screenright - GameBase->screenleft) / 2.0) - w / 2.0),
-		(int)(-1.0 + GameBase->screentop + ((GameBase->screenbottom - GameBase->screentop) / 2.0) - 110.0 * xscale), 0, color_black);
-	CFont_WriteText("Roboto-Regular", 40, GameBase->SubStateText, strlen(GameBase->SubStateText), (int)(1.0 + GameBase->screenleft + ((GameBase->screenright - GameBase->screenleft) / 2.0) - w / 2.0),
-		(int)(1.0 + GameBase->screentop + ((GameBase->screenbottom - GameBase->screentop) / 2.0) - 110.0 * xscale), 0, color_black);
-	CFont_WriteText("Roboto-Regular", 40, GameBase->SubStateText, strlen(GameBase->SubStateText), (int)(GameBase->screenleft + ((GameBase->screenright - GameBase->screenleft) / 2.0) - w / 2.0),
-		(int)(GameBase->screentop + ((GameBase->screenbottom - GameBase->screentop) / 2.0) - 110.0 * xscale), 0, color_white);
+	int w = CFont_TextWidth("Roboto-Regular", 40, GameBase->SubStateText);
+	CFont_WriteText("Roboto-Regular", 40, GameBase->SubStateText, (int)(-1.0 + GameBase->screenleft + ((GameBase->screenright - GameBase->screenleft) / 2.0) - w / 2.0),
+		(int)(-1.0 + GameBase->screentop + ((GameBase->screenbottom - GameBase->screentop) / 2.0) - 110.0 * xscale), color_black);
+	CFont_WriteText("Roboto-Regular", 40, GameBase->SubStateText, (int)(-1.0 + GameBase->screenleft + ((GameBase->screenright - GameBase->screenleft) / 2.0) - w / 2.0),
+		(int)(1.0 + GameBase->screentop + ((GameBase->screenbottom - GameBase->screentop) / 2.0) - 110.0 * xscale), color_black);
+	CFont_WriteText("Roboto-Regular", 40, GameBase->SubStateText, (int)(1.0 + GameBase->screenleft + ((GameBase->screenright - GameBase->screenleft) / 2.0) - w / 2.0),
+		(int)(-1.0 + GameBase->screentop + ((GameBase->screenbottom - GameBase->screentop) / 2.0) - 110.0 * xscale), color_black);
+	CFont_WriteText("Roboto-Regular", 40, GameBase->SubStateText, (int)(1.0 + GameBase->screenleft + ((GameBase->screenright - GameBase->screenleft) / 2.0) - w / 2.0),
+		(int)(1.0 + GameBase->screentop + ((GameBase->screenbottom - GameBase->screentop) / 2.0) - 110.0 * xscale), color_black);
+	CFont_WriteText("Roboto-Regular", 40, GameBase->SubStateText, (int)(GameBase->screenleft + ((GameBase->screenright - GameBase->screenleft) / 2.0) - w / 2.0),
+		(int)(GameBase->screentop + ((GameBase->screenbottom - GameBase->screentop) / 2.0) - 110.0 * xscale), color_white);
 }
 
 bool CGameBase_UpdateLogic(CGameBase* GameBase)

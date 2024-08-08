@@ -79,7 +79,6 @@ void CGameBreakOut_destroyallblocks(CGameBreakOut* GameBreakOut)
 
 void CGameBreakOut_createblocks(CGameBreakOut* GameBreakOut, bool setlocation)
 {
-	SDL_Point* tz;
 	GameBreakOut->pattern = rand() % 5;
 	for (int x = 0; x < CGameBreakOut_blockcols; x++)
 	{

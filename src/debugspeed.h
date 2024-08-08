@@ -68,12 +68,12 @@ int* _faststrcat( int* dest, int* src )
 }
 
 
-void _printSpeedInternal(int DebugSpeedValue, int DebugSpeedMaxValue, float DebugSpeedAvgValue, int DebugSpeedAvgCount, int* DebugSpeedMaxTextLengthArrayItem, int percentageMultiplyer, int Percentagedivisor, int Nr, int x, int y, int* prefix, int* internalprefix, float avgmultiply)
+void _printSpeedInternal(int DebugSpeedValue, int DebugSpeedMaxValue, float DebugSpeedAvgValue, int DebugSpeedAvgCount, int* DebugSpeedMaxTextLengthArrayItem, int percentageMultiplyer, int Percentagedivisor,  int x, int y, int* prefix, int* internalprefix, float avgmultiply, bool usepercentages)
 {
 	int[20] debugNr;
 	int[100] Msg;
 	int* PMsg;
-	if(USEPERCENTAGES)
+	if(usepercentages)
 		itoa(DebugSpeedMaxValue * percentageMultiplyer /Percentagedivisor, debugNr, 10);
 	else
 		itoa(DebugSpeedMaxValue, debugNr, 10);
@@ -84,13 +84,13 @@ void _printSpeedInternal(int DebugSpeedValue, int DebugSpeedMaxValue, float Debu
 	debugNr[0] = '0';
 	debugNr[1] = 0;
 	if(DebugSpeedAvgCount > 0)
-		if(USEPERCENTAGES)
+		if(usepercentages)
 			ftoa((DebugSpeedAvgValue / DebugSpeedAvgCount) * avgmultiply * percentageMultiplyer /Percentagedivisor, debugNr);
 		else
 			ftoa((DebugSpeedAvgValue / DebugSpeedAvgCount) * avgmultiply, debugNr);
 	PMsg = _faststrcat(PMsg, debugNr);
 	PMsg = _faststrcat(PMsg, "/");
-	if(USEPERCENTAGES)
+	if(usepercentages)
 		itoa(DebugSpeedValue * percentageMultiplyer /Percentagedivisor, debugNr, 10);
 	else
 		itoa(DebugSpeedValue, debugNr, 10);
@@ -116,8 +116,8 @@ void printDebugSpeed(int Nr, int x, int y, int* prefix, float avgmultiply)
 		return;
 	if(Nr < MAXDEBUGSPEEDS)
 	{
-		_printSpeedInternal(DebugSpeedValues[Nr], DebugSpeedMaxValues[Nr], DebugSpeedRunningAvg[Nr], DebugSpeedRunningAvgCount[Nr], &DebugSpeedsPrevLenText[Nr],  100, 250000,  Nr, x, y, prefix, "CPU:", avgmultiply);
-		_printSpeedInternal(DebugSpeedGPUValues[Nr], DebugSpeedGPUMaxValues[Nr], DebugSpeedGPURunningAvg[Nr], DebugSpeedRunningAvgCount[Nr], &DebugSpeedsGPUPrevLenText[Nr], 100, (9 * 640 * 360), Nr, x, y+bios_character_height, prefix, "GPU:", avgmultiply);
+		_printSpeedInternal(DebugSpeedValues[Nr], DebugSpeedMaxValues[Nr], DebugSpeedRunningAvg[Nr], DebugSpeedRunningAvgCount[Nr], &DebugSpeedsPrevLenText[Nr],  100, 250000,  x, y, prefix, "CPU:", avgmultiply, USEPERCENTAGES);
+		_printSpeedInternal(DebugSpeedGPUValues[Nr], DebugSpeedGPUMaxValues[Nr], DebugSpeedGPURunningAvg[Nr], DebugSpeedRunningAvgCount[Nr], &DebugSpeedsGPUPrevLenText[Nr], 100, (9 * 640 * 360), x, y+bios_character_height, prefix, "GPU:", avgmultiply, USEPERCENTAGES);
 	}
 }
 

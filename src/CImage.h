@@ -398,7 +398,7 @@ void CImage_DrawImage(int GFXID, int AnimTile, SDL_Rect* Src, SDL_Rect* Dst)
 
 
 //fuze used center points for positions and a floating point scale vector
-void CImage_DrawImageFuzeTex(Texture *aTexture, int AnimTile, SDL_Rect *SrcRect, bool CenterImagePos, int Posx, int Posy, float Angle, float Scalex, float Scaley,int TintR, int TintG, int TintB, int Alpha)
+void CImage_DrawImageFuzeTex(Texture *aTexture, int AnimTile, bool CenterImagePos, int Posx, int Posy, float Angle, float Scalex, float Scaley,int TintR, int TintG, int TintB, int Alpha)
 {
 	if(!CImage_ImgEnabled)
 		return;
@@ -449,20 +449,20 @@ void CImage_DrawImageFuzeTex(Texture *aTexture, int AnimTile, SDL_Rect *SrcRect,
 
 
 //fuze used center points for positions and a floating point scale vector
-void CImage_DrawImageFuzeSrcRectTintFloat(int GFXID, int AnimTile, SDL_Rect *SrcRect, bool CenterImagePos, int Posx, int Posy, float Angle, float Scalex, float Scaley, float TintR, float TintG, float TintB, float Alpha)
+void CImage_DrawImageFuzeSrcRectTintFloat(int GFXID, int AnimTile, bool CenterImagePos, int Posx, int Posy, float Angle, float Scalex, float Scaley, float TintR, float TintG, float TintB, float Alpha)
 {
 	if((GFXID < 0) || (GFXID >= GFX_Max))
 		return;
 
-	CImage_DrawImageFuzeTex(CImage_Images[GFXID]->Img,AnimTile, SrcRect, CenterImagePos, Posx, Posy, Angle, Scalex,  Scaley, (int)floor(255.0 * TintR) , (int)floor(255.0 * TintG), (int)floor(255.0 * TintB) , (int)floor(255.0 * Alpha));
+	CImage_DrawImageFuzeTex(CImage_Images[GFXID]->Img,AnimTile, CenterImagePos, Posx, Posy, Angle, Scalex,  Scaley, (int)floor(255.0 * TintR) , (int)floor(255.0 * TintG), (int)floor(255.0 * TintB) , (int)floor(255.0 * Alpha));
 }
 
-void CImage_DrawImageFuzeSrcRectTintFloatTex(Texture* Texture, int AnimTile, SDL_Rect *SrcRect, bool CenterImagePos, int Posx, int Posy, float Angle, float Scalex, float Scaley,float TintR, float TintG, float TintB, float Alpha)
+void CImage_DrawImageFuzeSrcRectTintFloatTex(Texture* Texture, int AnimTile, bool CenterImagePos, int Posx, int Posy, float Angle, float Scalex, float Scaley,float TintR, float TintG, float TintB, float Alpha)
 {
 	if(Texture == NULL)
 		return;
 
-	CImage_DrawImageFuzeTex(Texture, AnimTile, SrcRect, CenterImagePos, Posx, Posy, Angle, Scalex,  Scaley, (int)floor(255.0 * TintR) , (int)floor(255.0 * TintG), (int)floor(255.0 * TintB) , (int)floor(255.0 * Alpha));
+	CImage_DrawImageFuzeTex(Texture, AnimTile, CenterImagePos, Posx, Posy, Angle, Scalex,  Scaley, (int)floor(255.0 * TintR) , (int)floor(255.0 * TintG), (int)floor(255.0 * TintB) , (int)floor(255.0 * Alpha));
 }
 
 //fuze used center points for positions and a floating point scale vector
@@ -471,7 +471,7 @@ void CImage_DrawImageFuzeTintFloat(int GFXID, int AnimTile, bool CenterImagePos,
 	if((GFXID < 0) || (GFXID >= GFX_Max))
 		return;
 
-	CImage_DrawImageFuzeTex(CImage_Images[GFXID]->Img, AnimTile, NULL, CenterImagePos, Posx, Posy, Angle, Scalex,  Scaley, (int)floor(255.0 * TintR) , (int)floor(255.0 * TintG), (int)floor(255.0 * TintB) , (int)floor(255.0 * Alpha));
+	CImage_DrawImageFuzeTex(CImage_Images[GFXID]->Img, AnimTile, CenterImagePos, Posx, Posy, Angle, Scalex,  Scaley, (int)floor(255.0 * TintR) , (int)floor(255.0 * TintG), (int)floor(255.0 * TintB) , (int)floor(255.0 * Alpha));
 }
 
 void CImage_DrawImageFuzeTintFloatTex(Texture *Texture, int AnimTile, bool CenterImagePos, int Posx, int Posy, float Angle, float Scalex, float Scaley,float TintR, float TintG, float TintB, float Alpha)
@@ -479,7 +479,7 @@ void CImage_DrawImageFuzeTintFloatTex(Texture *Texture, int AnimTile, bool Cente
 	if(Texture == NULL)
 		return;
 
-	CImage_DrawImageFuzeTex(Texture, AnimTile, NULL, CenterImagePos, Posx, Posy, Angle, Scalex,  Scaley, (int)floor(255.0 * TintR) , (int)floor(255.0 * TintG), (int)floor(255.0 * TintB) , (int)floor(255.0 * Alpha));
+	CImage_DrawImageFuzeTex(Texture, AnimTile, CenterImagePos, Posx, Posy, Angle, Scalex,  Scaley, (int)floor(255.0 * TintR) , (int)floor(255.0 * TintG), (int)floor(255.0 * TintB) , (int)floor(255.0 * Alpha));
 }
 
 void CImage_DrawImageFuze(int GFXID,int AnimTile, bool CenterImagePos, int Posx, int Posy, float Angle, float Scalex, float Scaley,float TintR, float TintG, float TintB, float Alpha)
@@ -487,7 +487,7 @@ void CImage_DrawImageFuze(int GFXID,int AnimTile, bool CenterImagePos, int Posx,
 	if((GFXID < 0) || (GFXID >= GFX_Max))
 		return;
 
-	CImage_DrawImageFuzeTex(CImage_Images[GFXID]->Img,AnimTile, NULL, CenterImagePos, Posx, Posy, Angle, Scalex,  Scaley, (int)floor(255.0 * TintR) , (int)floor(255.0 * TintG), (int)floor(255.0 * TintB) , (int)floor(255.0 * Alpha));
+	CImage_DrawImageFuzeTex(CImage_Images[GFXID]->Img,AnimTile, CenterImagePos, Posx, Posy, Angle, Scalex,  Scaley, (int)floor(255.0 * TintR) , (int)floor(255.0 * TintG), (int)floor(255.0 * TintB) , (int)floor(255.0 * Alpha));
 }
 
 

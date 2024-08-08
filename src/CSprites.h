@@ -445,7 +445,7 @@ void CSprites_DrawSprite(CSprite* Spr)
 		//multiply is to get the sign
 		//Vec2F scale = { 1.0 * (Spr->sxscale / fabs(Spr->sxscale)), 1.0 * (Spr->syscale / fabs(Spr->syscale))};
 		//Vec2F scale = { Spr->sxscale, Spr->syscale};				
-		CImage_DrawImageFuzeSrcRectTintFloat(*Spr->imageID, Spr->animTile, NULL, true, Spr->x, Spr->y, Spr->rotation, Spr->sxscale, Spr->syscale, Spr->r, Spr->g, Spr->b, Spr->a);
+		CImage_DrawImageFuzeSrcRectTintFloat(*Spr->imageID, Spr->animTile, true, Spr->x, Spr->y, Spr->rotation, Spr->sxscale, Spr->syscale, Spr->r, Spr->g, Spr->b, Spr->a);
 		
 
 		if (Spr->show_collision_shape || CSprites_ForceShowCollisionShape)

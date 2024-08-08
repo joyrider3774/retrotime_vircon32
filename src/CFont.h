@@ -19,10 +19,6 @@
 
 bool CFont_GlobalFontEnabled = true;
 
-int fontCacheItems = 0;
-
-
-
 textfont* getFont(int* FontName, int FontSize)
 {
 	if((strcmp(FontName, "Roboto-Regular") == 0) && (FontSize == 30))
@@ -64,61 +60,55 @@ void CFont_DeInit()
 	}
 }
 
-SDL_Point* CFont_TextSize(int* Font, int FontSize, int* Tekst, int NrOfChars, int YSpacing)
+SDL_Point* CFont_TextSize(int* Font, int FontSize, int* Tekst)
 {
 	SDL_Point* Result = (SDL_Point*) malloc(sizeof(SDL_Point));
 	Result->x = 0;
 	Result->y = 0; 
-	if (!CFont_GlobalFontEnabled || (NrOfChars == 0))
+	if (!CFont_GlobalFontEnabled || (*Tekst == 0))
 		return Result;
-
+	
 	textfont* FontIn = getFont(Font, FontSize);
 	if(FontIn != NULL)
 	{
-		int Lines = 1;
-		int Chars = 0;
-		int Highest = 0;
-		int w = 0;
-		int *p = Tekst;
-		int *start = Tekst;
-    	while ((*p) && (Chars < NrOfChars))
+		while( *Tekst )
 		{
-			if (*p == '\n')
-			{
-				w = textfont_get_line_width(FontIn, start);
-				if(w > Highest)
-					Highest = w;				
-				start = p+1;
-				Lines++;
-			}
-			p++;
-			Chars++;
+			// calculate this line's position
+			int line_width = textfont_get_line_width( FontIn, Tekst );
+			if(line_width > Result->x)
+				Result->x = line_width;	
+						
+			while((*Tekst != '\n') && (*Tekst != 0))
+				Tekst++;
+
+			Result->y += FontIn->character_height + FontIn->line_separation;
+			
+			// then detect and skip the '\n' character
+			// since it is not counted as part of the line
+			if( *Tekst == '\n' )
+			Tekst++;
 		}
-		w = textfont_get_line_width(FontIn, start);
-		if(w > Highest)
-			Highest = w;
-		Result->y = Lines * FontIn->character_height;
-		Result->x = Highest;
+
 		return Result;
 	}
 }
 
-int CFont_TextWidth(int* Font, int FontSize, int* Tekst, int NrOfChars)
+int CFont_TextWidth(int* Font, int FontSize, int* Tekst)
 {
 	if(!CFont_GlobalFontEnabled)
 		return 0;
-	SDL_Point* Tmp = CFont_TextSize(Font, FontSize, Tekst, NrOfChars, 0);
+	SDL_Point* Tmp = CFont_TextSize(Font, FontSize, Tekst);
 	int result = Tmp->x;
 	free(Tmp);
 	return result;
 }
 
-void drawTextColor(textfont* font, int* text, int len, int x, int y, int color)
+void drawTextColor(textfont* font, int* text, int x, int y, int color)
 {
 	if(!font)
 		return;
 
-	if(len == 0)
+	if(*text == 0)
 		return;
 
 	set_multiply_color(color);
@@ -126,23 +116,23 @@ void drawTextColor(textfont* font, int* text, int len, int x, int y, int color)
 	set_multiply_color(color_white);
 }
 
-void CFont_WriteTextBitmap(int* Font, int FontSize, int* Tekst, int NrOfChars, int X, int Y, int YSpacing, int ColorIn)
+void CFont_WriteTextBitmap(int* Font, int FontSize, int* Tekst, int X, int Y, int ColorIn)
 {
 	if(!CFont_GlobalFontEnabled)
 		return;
 	textfont* FontIn = getFont(Font, FontSize);
 	if (FontIn)
 	{
-		drawTextColor(FontIn, Tekst, NrOfChars, X, Y, ColorIn);
+		drawTextColor(FontIn, Tekst, X, Y, ColorIn);
 	}
 }
 
-void CFont_WriteText(int* Font, int FontSize, int* Tekst, int NrOfChars, int X, int Y, int YSpacing, int ColorIn)
+void CFont_WriteText(int* Font, int FontSize, int* Tekst, int X, int Y, int ColorIn)
 {
 	if(!CFont_GlobalFontEnabled)
 		return;
 
-	CFont_WriteTextBitmap(Font, FontSize, Tekst, NrOfChars, X, Y, YSpacing, ColorIn);
+	CFont_WriteTextBitmap(Font, FontSize, Tekst, X, Y, ColorIn);
 }
 
 #endif

@@ -116,44 +116,44 @@ void SubScoreScreen()
 		if ((Game == Games - 1) && (GameMode == GMRetroCarousel))
 		{
 			PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Final Results");
-			int Texw = CFont_TextWidth("Roboto-Regular", (int)(80.0 * yscale), TextTmp, strlen(TextTmp));
-			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), TextTmp, strlen(TextTmp), (int)((ScreenWidth - Texw) / 2.0), (int)(50.0 * yscale), 0, color_white);
+			int Texw = CFont_TextWidth("Roboto-Regular", (int)(80.0 * yscale), TextTmp);
+			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), TextTmp, (int)((ScreenWidth - Texw) / 2.0), (int)(50.0 * yscale), color_white);
 			
 			PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "-------------------------");
-			Texw = CFont_TextWidth("Roboto-Regular", (int)(80.0 * yscale), TextTmp, strlen(TextTmp));
-			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), TextTmp, strlen(TextTmp), (int)((ScreenWidth - Texw) / 2.0), (int)(85.0 * yscale), 0, color_white);
+			Texw = CFont_TextWidth("Roboto-Regular", (int)(80.0 * yscale), TextTmp);
+			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), TextTmp, (int)((ScreenWidth - Texw) / 2.0), (int)(85.0 * yscale), color_white);
 		}
 		else
 		{
 			PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Results");
-			int Texw = CFont_TextWidth("Roboto-Regular", (int)(80.0 * yscale), TextTmp, strlen(TextTmp));
-			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), TextTmp, strlen(TextTmp), (int)((ScreenWidth - Texw) / 2.0), (int)(50.0 * yscale), 0, color_white);
+			int Texw = CFont_TextWidth("Roboto-Regular", (int)(80.0 * yscale), TextTmp);
+			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), TextTmp, (int)((ScreenWidth - Texw) / 2.0), (int)(50.0 * yscale), color_white);
 			
 			PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "----------------");
-			Texw = CFont_TextWidth("Roboto-Regular", (int)(80.0 * yscale), TextTmp, strlen(TextTmp));
-			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), TextTmp, strlen(TextTmp), (int)((ScreenWidth - Texw) / 2.0), (int)(85.0 * yscale), 0, color_white);
+			Texw = CFont_TextWidth("Roboto-Regular", (int)(80.0 * yscale), TextTmp);
+			CFont_WriteText("Roboto-Regular", (int)(80.0 * yscale), TextTmp, (int)((ScreenWidth - Texw) / 2.0), (int)(85.0 * yscale), color_white);
 		}
 
 
 		PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Game: ");
 		PTextTmp = faststrcat(PTextTmp, GSGames[Game].name);
-		CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(180.0 * yscale), 0, color_white);
+		CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(180.0 * yscale), color_white);
 		
 		PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Game Mode: ");
 		PTextTmp = faststrcat(PTextTmp, GMModes[GameMode].name);
-		CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(225.0 * yscale), 0, color_white);
+		CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(225.0 * yscale), color_white);
 		
 		if (GameMode == GMRetroCarousel)
 		{
 			PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Previous Rounds Score: ");
 			itoa(prevretrocarouselscore, Nr, 10);
 			PTextTmp = faststrcat(PTextTmp, Nr);
-			CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(285.0 * yscale), 0, color_white);
+			CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(285.0 * yscale), color_white);
 			
 			PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Game Score: ");
 			itoa(Scores[Game][GameMode], Nr, 10);
 			PTextTmp = faststrcat(PTextTmp, Nr);
-			CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(330.0 * yscale), 0, color_white);
+			CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(330.0 * yscale), color_white);
 			
 
 			if (Game < Games - 1)
@@ -168,14 +168,14 @@ void SubScoreScreen()
 				itoa(RetroCarouselScore, Nr, 10);
 				PTextTmp = faststrcat(PTextTmp, Nr);
 			}
-			CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(375.0 * yscale), 0, color_white);
+			CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(375.0 * yscale), color_white);
 
 			if (wasnewhighscoregame)
 			{
 				PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "New Game High Score: ");
 				itoa(HighScores[Game][GameMode], Nr, 10);
 				PTextTmp = faststrcat(PTextTmp, Nr);
-				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(425.0 * yscale), 0, color_white);
+				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(425.0 * yscale), color_white);
 				
 				SDL_Point pos = { (int)(120.0 * xscale),(int)(425.0 * yscale) };
 				CImage_DrawImageFuze(GFXMedal,0, false, pos.x, pos.y, 0, MedalScale.x, MedalScale.y, 1.0, 1.0, 1.0, 1.0);
@@ -185,7 +185,7 @@ void SubScoreScreen()
 				PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Game High Score: ");
 				itoa(HighScores[Game][GameMode], Nr, 10);
 				PTextTmp = faststrcat(PTextTmp, Nr);
-				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(425.0 * yscale), 0, color_white);
+				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(425.0 * yscale), color_white);
 			}
 
 			if (wasnewhighscorecarousel)
@@ -193,7 +193,7 @@ void SubScoreScreen()
 				PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "New All Rounds High Score: ");
 				itoa(RetroCarouselHighScore, Nr, 10);
 				PTextTmp = faststrcat(PTextTmp, Nr);
-				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(470.0 * yscale), 0, color_white);
+				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(470.0 * yscale), color_white);
 				
 				SDL_Point pos = { (int)(120.0 * xscale),(int)(470.0 * yscale) };
 				CImage_DrawImageFuze(GFXMedal, 0, false, pos.x,pos.y, 0, MedalScale.x,MedalScale.y, 1.0, 1.0, 1.0, 1.0);
@@ -203,7 +203,7 @@ void SubScoreScreen()
 				PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "All Rounds High Score: ");
 				itoa(RetroCarouselHighScore, Nr, 10);
 				PTextTmp = faststrcat(PTextTmp, Nr);
-				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(470.0 * yscale), 0, color_white);
+				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(470.0 * yscale), color_white);
 			}
 
 			if (Game < Games - 1)
@@ -213,22 +213,22 @@ void SubScoreScreen()
 			}
 			else
 				PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Press (A) for titlescreen");
-			int Texw = CFont_TextWidth("Roboto-Regular", (int)(34.0 * yscale), TextTmp, strlen(TextTmp));
-			CFont_WriteText("Roboto-Regular", (int)(34.0 * yscale), TextTmp, strlen(TextTmp), (int)((ScreenWidth - Texw) / 2.0), (int)(630.0 * yscale), 0, color_white);			
+			int Texw = CFont_TextWidth("Roboto-Regular", (int)(34.0 * yscale), TextTmp);
+			CFont_WriteText("Roboto-Regular", (int)(34.0 * yscale), TextTmp, (int)((ScreenWidth - Texw) / 2.0), (int)(630.0 * yscale), color_white);			
 		}
 		else
 		{
 			PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Game Score: ");
 			itoa(Scores[Game][GameMode], Nr, 10);
 			PTextTmp = faststrcat(PTextTmp, Nr);
-			CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(285.0 * yscale), 0, color_white);
+			CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(285.0 * yscale), color_white);
 			
 			if (wasnewhighscoregame)
 			{
 				PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "New Game High Score: ");
 				itoa(HighScores[Game][GameMode], Nr, 10);
 				PTextTmp = faststrcat(PTextTmp, Nr);
-				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(330.0 * yscale), 0, color_white);
+				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(330.0 * yscale), color_white);
 				
 
 				SDL_Point pos = { (int)(120.0 * xscale),(int)(330.0 * yscale) };
@@ -239,11 +239,11 @@ void SubScoreScreen()
 				PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Game High Score: ");
 				itoa(HighScores[Game][GameMode], Nr, 10);
 				PTextTmp = faststrcat(PTextTmp, Nr);
-				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, strlen(TextTmp), (int)(150.0 * xscale), (int)(330.0 * yscale), 0, color_white);
+				CFont_WriteText("Roboto-Regular", (int)(50.0 * yscale), TextTmp, (int)(150.0 * xscale), (int)(330.0 * yscale), color_white);
 			}
 			PTextTmp = TextTmp; *PTextTmp = 0; PTextTmp = faststrcat(PTextTmp, "Press (A) for titlescreen");
-			int Texw = CFont_TextWidth("Roboto-Regular", (int)(34.0 * yscale), TextTmp, strlen(TextTmp));
-			CFont_WriteText("Roboto-Regular", (int)(34.0 * yscale), TextTmp, strlen(TextTmp), (int)((ScreenWidth - Texw) / 2.0), (int)(630.0 * yscale), 0, color_white);
+			int Texw = CFont_TextWidth("Roboto-Regular", (int)(34.0 * yscale), TextTmp);
+			CFont_WriteText("Roboto-Regular", (int)(34.0 * yscale), TextTmp, (int)((ScreenWidth - Texw) / 2.0), (int)(630.0 * yscale), color_white);
 		}
 	
 	}

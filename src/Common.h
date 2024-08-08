@@ -312,7 +312,7 @@ OptionMenusDesc[OptionMenus] OMOptionMenus =
 
 int GameAlpha = 0;
 
-int AlphaTimer;
+//int AlphaTimer;
 int TimerTicks;
 
 int NextSubState, NextSubStateTimeAdd;

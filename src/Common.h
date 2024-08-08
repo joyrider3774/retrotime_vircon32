@@ -5,13 +5,8 @@
 
 #define debugInfoStats false
 #define debugShowCollisionShapes false
-#define AlphaEnabled false
 
 #define epsilion 0.0001
-
-#define MaxAlpha 245
-#define AlphaIncrease 5
-#define MaxAlphaTime 500
 
 #define ScreenWidth 640
 #define ScreenHeight 360
@@ -309,10 +304,6 @@ OptionMenusDesc[OptionMenus] OMOptionMenus =
 	{OMBack,			"Back"},
 };
 
-
-int GameAlpha = 0;
-
-//int AlphaTimer;
 int TimerTicks;
 
 int NextSubState, NextSubStateTimeAdd;
@@ -341,12 +332,10 @@ float getCurrentTimeMilliseconds()
 //or main menu (basically it allows fading while keeping the subgamestate
 void CGame_StartFade()
 {
-	if (!AlphaEnabled)
-		return;
 }
 
 //mainly used to fade when going from one gamestate to another gamestate
-void CGame_StartCrossFade(int SetGameState, int SetNextSubState, float SetNextSubStateCounter, int SetNextSubStateTimeAdd)
+void CGame_StartCrossFade(int SetGameState, int SetNextSubState, float SetNextSubStateCounter)
 {
 	GameState = SetGameState;
 	SubGameState = SetNextSubState;

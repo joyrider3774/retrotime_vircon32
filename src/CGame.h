@@ -284,7 +284,6 @@ void CGame_Init()
 	GameState = GSIntroInit;
 	Game = 0;
 	GameMode = GMGame;
-	GameAlpha = MaxAlpha;
 	SubStateTime = 0;
 	Timer = 0.0;
 	SubStateCounter = 0;
@@ -301,7 +300,7 @@ void CGame_Init()
 }
 
 int[1000] DebugTmpText;
-int[10] DebugTmpNr = "test";
+int[10] DebugTmpNr;
 int frames = 0;	
 
 void CGame_MainLoop()
@@ -440,7 +439,7 @@ void CGame_MainLoop()
 	 				break;	 			
 	 		}
 			CGame_ResetTimer();
-	 		CGame_StartCrossFade(ActiveGameGameStateId, SGReadyGo, 3, 500);
+	 		CGame_StartCrossFade(ActiveGameGameStateId, SGReadyGo, 3);
 			StopDebugSpeed(4);
 	 		break;	
 
@@ -464,31 +463,6 @@ void CGame_MainLoop()
 	 	default:
 	 		break;
 	}
-
-	// if (AlphaEnabled)
-	// {
-	// 	if (GameAlpha < MaxAlpha)
-	// 	{
-	// 		GameAlpha = (int)truncf(MaxAlpha * ((float)(pd->system->getCurrentTimeMilliseconds() - AlphaTimer) / MaxAlphaTime));
-	// 		if (GameAlpha >= MaxAlpha)
-	// 		{
-	// 			GameAlpha = MaxAlpha;
-	// 			SubGameState = NextSubState;
-	// 			SubStateTime = pd->system->getCurrentTimeMilliseconds() + NextSubStateTimeAdd;
-	// 			SubStateCounter = (float)NextSubStateCounter;
-	// 		}
-	// 		if ((int)floorf((float)(GameAlpha / (MaxAlpha / (GameAlphaPatternLength - 1)))) != GameAlphaPatternIndex)
-	// 		{
-	// 			GameAlphaPatternIndex = (int)floorf((float)(GameAlpha / (MaxAlpha / (GameAlphaPatternLength-1))));
-	// 			pd->graphics->pushContext(TexOffScreenMask);
-	// 			pd->graphics->fillRect(0, 0, 0, 0, kColorBlack);
-	// 			pd->graphics->fillRect(0, 0, ScreenWidth, ScreenHeight, (LCDColor)FadeInPatterns3[(GameAlphaPatternLength - 1) - GameAlphaPatternIndex]);
-	// 			pd->graphics->popContext();
-	// 			pd->graphics->setBitmapMask(TexOffScreen, TexOffScreenMask);
-	// 		}
-	// 		pd->graphics->drawBitmap(TexOffScreen, 0, 0, kBitmapUnflipped);
-	// 	}
-	// }
 
 // int[21] GFXSlotsMsg = "GFX Slots: 0000/0000";
 // 	int[21] SNDSlotsMsg = "SND Slots: 0000/0000";

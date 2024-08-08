@@ -29,7 +29,7 @@ void ResetGlobalsTitleScreen()
 void InitTitleScreen()
 {
 	CAudio_PlayMusic(MusMenu, -1);
-	CGame_StartCrossFade(GameState, SGNone, 0, 0);
+	CGame_StartCrossFade(GameState, SGNone, 0);
 }
 
 void TitleScreen()
@@ -238,8 +238,8 @@ void TitleScreen()
 	//		"\n"
 			"All other assets (including sound) come from either payed or free\n"
 			"asset packs. For a complete list check the github or itch.io page:\n"
-			"https://github.com/joyrider3774/RetroTime or\n"
-			"https://joyrider3774.itch.io/retrotime\n");
+			"https://github.com/joyrider3774/retrotime_vircon32 or\n"
+			"https://joyrider3774.itch.io/retrotime_vircon32_version\n");
 
 			int tw = CFont_TextWidth("Roboto-Regular", (int)(34.0*yscale), Text);
 			CFont_WriteText("Roboto-Regular", (int)(34.0*yscale), Text, (int)((ScreenWidth - tw) / 2.0), (int)(140.0*yscale), color);			

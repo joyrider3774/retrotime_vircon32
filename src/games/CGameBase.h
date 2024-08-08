@@ -222,7 +222,7 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 				case PMQuit:
 				{
 					CGameBase_prevsubgamestate = -1;
-					CGame_StartCrossFade(GSTitleScreenInit, SGNone, 3, 500);
+					CGame_StartCrossFade(GSTitleScreenInit, SGNone, 3);
 					break;
 				}
 

@@ -263,8 +263,8 @@ void CGame_DeInit()
 
 void CGame_Init()
 {
-	//srand(get_time());
-	srand(0);
+	srand(get_time());
+	//srand(0);
 	initDebugSpeed();
 	memset( &GameSignature, 0, sizeof( game_signature ) );
     strcpy( GameSignature, "RETROTIME_V1" );

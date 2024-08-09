@@ -198,7 +198,7 @@ GameDesc[Games] GSGames = {
 		"Each time you move up to a place you had not reached yet,\n"
 		"you will gain points. Avoid getting hit by traffic, don't\n"
 		"fall into water, don't exceed the edges of the playfield\n"
-		"or you will lose a life. Collect diffrent fruit to gain\n"
+		"or you will lose a life. Collect different fruits to gain\n"
 		"extra score.",
 		"a game based on Frogger (Arcade)"
 	},

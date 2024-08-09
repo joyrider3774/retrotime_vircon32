@@ -347,7 +347,7 @@ void CGame_StartCrossFade(int SetGameState, int SetNextSubState, float SetNextSu
 	GameState = SetGameState;
 	SubGameState = SetNextSubState;
 	SubStateCounter = (float)SetNextSubStateCounter;
-	SubStateTime = getCurrentTimeMilliseconds() + NextSubStateTimeAdd;
+	SubStateTime = getCurrentTimeMilliseconds() + NextSubStateTimeAdd + 500;
 	return;
 }
 

@@ -411,10 +411,11 @@ void CGame_MainLoop()
 	 		if(ActiveGameGameStateId == -1)
 			{
 				CGame_CreateActiveGame();
-				frames = get_frame_counter();
+				frames = get_frame_counter()-1;
 				ResetAllDebugSpeedMaxValues();
 				//return so game creation & game init is in seperate frame
-				break;
+				StopDebugSpeed(4);
+				return;
 			}
 			//game had been created init it
 	 		switch (ActiveGameGameStateId)
@@ -439,7 +440,7 @@ void CGame_MainLoop()
 	 				break;
 				case GSSnake:
 	 				CGameSnake_init(GameSnake);
-	 				break;	 			
+	 				break;
 				case GSRamIt:
 	 				CGameRamIt_init(GameRamIt);
 	 				break;

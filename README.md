@@ -3,7 +3,7 @@
 
 <img src="screenshots/retrotime.png">
 
-RetroTime for vircon32 is a game containing 8 retro based games playable in 3 game modes being Retro Carousel, Time Attack and Lives mode. The game is a port from the Playdate version which was a port from the SDL2 version from my competetion entry for Fuze 4 for Nintendo switch, in colleboration Wireframe magazine. 
+RetroTime for vircon32 is a game containing 8 retro based games playable in 3 game modes being Retro Carousel, Time Attack and Lives mode. The game is a port from the Playdate version which was a port from the SDL2 version from my competition entry for Fuze 4 for Nintendo switch, in collaboration with Wireframe magazine. 
 
 
 ## Game Modes
@@ -33,43 +33,43 @@ Invaders is a game based on Space Invaders (Arcade). Rows of enemies are closing
 ### Brick Breaker
 <img src="screenshots/brickbreaker.png">
 
-Brick Breaker is a game based on Breakout (Arcade). Rows of blocks have to be destroyed by touching them with the ball. You control the  paddle at the bottom of the screen with the left joystick or dpad. Keeping (A) pressed speeds up the paddle. You have to let the ball bounce of your paddle to send it back in the playfield. Destroying blocks gains points. Fail to bounce back the ball and you lose a life.
+Brick Breaker is a game based on Breakout (Arcade). Rows of blocks have to be destroyed by touching them with the ball. You control the  paddle at the bottom of the screen with the dpad. Keeping (A) pressed speeds up the paddle. You have to let the ball bounce of your paddle to send it back in the playfield. Destroying blocks gains points. Fail to bounce back the ball and you lose a life.
 
 
 ### Toady
 <img src="screenshots/toady.png">
 
-Toady is a game based on Frogger (Arcade). You control the pet by left joystick or dpad and you have to keep moving up. Each time you move up to a place you had not reached yet, you will gain points. Avoid getting hit by traffic, don't fall into water, don't exceed the edges of the playfield or you will lose a life. Collect diffrent fruit to gain extra score.
+Toady is a game based on Frogger (Arcade). You control the pet by the dpad and you have to keep moving up. Each time you move up to a place you had not reached yet, you will gain points. Avoid getting hit by traffic, don't fall into water, don't exceed the edges of the playfield or you will lose a life. Collect different fruits to gain extra score.
 
 
 ### Snakey
 <img src="screenshots/snakey.png">
 
-Snakey is a game based on well snake (Nokia 3310). You control a snake's head (red block) by the left joystick or dpad. The snake can move in four directions and wants food (green blocks). Each time you eat food the snake's body will grow. Eat food to gain points, the longer your snake is to more points you will gain. Touching the snake's body or going outside the playfield will lose you a life.
+Snakey is a game based on well snake (Nokia 3310). You control a snake's head (red block) by the dpad. The snake can move in four directions and wants food (green blocks). Each time you eat food the snake's body will grow. Eat food to gain points, the longer your snake is to more points you will gain. Touching the snake's body or going outside the playfield will lose you a life.
 
 
 ### Bubble Buster
 <img src="screenshots/bubblebuster.png">
 
-Bubble Buster is a game based on Pang (Arcade). You control a player that needs to pop bubbles. You can control the player using the left joystick or dpad and shoot at bubbles using (A) button. If you hit a bubble it will split up into smaller bubbles and you gain points. Get hit by a bubble and you will lose a life, making you temporary invincible but you can not shoot during this time. Clearing all bubbles gives you extra points.
+Bubble Buster is a game based on Pang (Arcade). You control a player that needs to pop bubbles. You can control the player using the dpad and shoot at bubbles using (A) button. If you hit a bubble it will split up into smaller bubbles and you gain points. Get hit by a bubble and you will lose a life, making you temporary invincible but you can not shoot during this time. Clearing all bubbles gives you extra points.
 
 
 ### Block Stacker
 <img src="screenshots/blockstacker.png">
 
-Block Stacker is a game of tetris. You control the blocks with the left joystick or dpad. You need to stack them in such a manner that they form complete rows. Once this is done that row will be removed. Speed increases gradually and having no place at the top to place a block will lose you a life. You can rotate blocks using (A) and drop them fast using (X).
+Block Stacker is a game of tetris. You control the blocks with the dpad. You need to stack them in such a manner that they form complete rows. Once this is done that row will be removed. Speed increases gradually and having no place at the top to place a block will lose you a life. You can rotate blocks using (A) and drop them fast using (X).
 
 
 ### Color Invasion
 <img src="screenshots/colorinvasion.png">
 
-Color Invasion is a game based on Ram-It (Atari 2600). You control the cannon with the left joystick or dpad. You need to shoot the invading colored bars completely of the screen using (A). Points are awarded when the color bar is completely of the screen, the closer a bar had gotten to the cannon the more points you will gain. You also gain extra points for clearing all bars from the screen. When a colored bar reaches the cannon rail you will lose a life.
+Color Invasion is a game based on Ram-It (Atari 2600). You control the cannon with the dpad. You need to shoot the invading colored bars completely of the screen using (A). Points are awarded when the color bar is completely of the screen, the closer a bar had gotten to the cannon the more points you will gain. You also gain extra points for clearing all bars from the screen. When a colored bar reaches the cannon rail you will lose a life.
 
 
 ### Faster Dave
 <img src="screenshots/fasterdave.png">
 
-Faster Dave is a game based on Fast Eddie (Atari 2600). You control Dave with the left joystick or dpad. You need to avoid or jump over enemies with the (A) button while collecting the magic balls. When you collect 9 balls the end level key is reachable. You are safe on ladders. Points are received for collecting magic balls and getting the end level key. Collecting the 10th magic ball is not required. When you touch an enemy you will a lose life. Every 5 levels, level layout changes.
+Faster Dave is a game based on Fast Eddie (Atari 2600). You control Dave with the dpad. You need to avoid or jump over enemies with the (A) button while collecting the magic balls. When you collect 9 balls the end level key is reachable. You are safe on ladders. Points are received for collecting magic balls and getting the end level key. Collecting the 10th magic ball is not required. When you touch an enemy you will a lose life. Every 5 levels, level layout changes.
 
 
 ## Controls
@@ -78,7 +78,7 @@ Faster Dave is a game based on Fast Eddie (Atari 2600). You control Dave with th
 | ------ | ------ |
 | D-Pad | Directional movement of the player, making selections in the menu's |
 | A button | Confirming in menus, the main game action |
-| X button | Secondary game action (only used in blockstacker to drop a block fast) |
+| X button | Secondary game action (only used in block stacker to drop a block fast) |
 | B | Back in menus, Pause Menu ingame |
 
 

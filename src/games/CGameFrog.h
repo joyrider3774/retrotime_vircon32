@@ -90,7 +90,7 @@ struct SObjectInfo {
 #define CGameFrog_rowtypewaterend 2
 #define CGameFrog_rowtyperoadstart 3
 #define CGameFrog_rowtyperoadend 7
-#define CGameFrog_maxobjects 190
+#define CGameFrog_maxobjects 175
 
 #define CGameFrog_lenrowtypes 9
 

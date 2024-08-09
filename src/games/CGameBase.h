@@ -140,6 +140,7 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 					case PMSoundVol:
 					{
 						CAudio_DecVolumeSound();
+						CGame_SaveHighScoresSettings();
 						break;
 					}
 
@@ -149,6 +150,7 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 						CAudio_DecVolumeMusic();
 						if (!wasplaying)
 							CAudio_PlayMusic(CurrentGameMusicID, -1);
+						CGame_SaveHighScoresSettings();
 						break;
 					}
 
@@ -163,6 +165,7 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 					case PMSoundVol:
 					{
 						CAudio_IncVolumeSound();
+						CGame_SaveHighScoresSettings();
 						break;
 					}
 
@@ -172,6 +175,7 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 						CAudio_IncVolumeMusic();
 						if (!wasplaying)
 							CAudio_PlayMusic(CurrentGameMusicID, -1);
+						CGame_SaveHighScoresSettings();
 						break;
 					}
 				}
@@ -229,6 +233,7 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 				case PMSoundVol:
 				{
 					CAudio_IncVolumeSound();
+					CGame_SaveHighScoresSettings();
 					break;
 				}
 
@@ -238,6 +243,7 @@ void CGameBase_PauseMenu(CGameBase* GameBase)
 					CAudio_IncVolumeMusic();
 					if (!wasplaying)
 						CAudio_PlayMusic(CurrentGameMusicID, -1);
+					CGame_SaveHighScoresSettings();
 					break;
 				}
 

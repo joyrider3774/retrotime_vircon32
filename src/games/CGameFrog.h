@@ -74,7 +74,7 @@ struct SObjectInfo {
 
 #define CGameFrog_lenlevelincspeeds 5
 
-#define CGameFrog_numcols (int)(15 / CGameFrog_ExtraScale)
+#define CGameFrog_numcols (int)(14 / CGameFrog_ExtraScale)
 #define CGameFrog_generatorrows 1
 #define CGameFrog_maxrowsbeforesafetyrow 4
 // or screensheight / playerspeed ceiled

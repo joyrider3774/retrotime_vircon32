@@ -10,7 +10,6 @@ struct Vec2F {
 
 float clampFloat(float value, float min, float max)
 {
-	//return std::max(min, std::min(max, value));
 	float tmpmin;
 	if(max > value)
 		tmpmin = value;

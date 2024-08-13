@@ -264,7 +264,6 @@ void CGame_DeInit()
 void CGame_Init()
 {
 	srand(get_time() + get_date());
-	//srand(0);
 	initDebugSpeed();
 	memset( &GameSignature, 0, sizeof( game_signature ) );
     strcpy( GameSignature, "RETROTIME_V1" );
@@ -477,98 +476,6 @@ void CGame_MainLoop()
 	 	default:
 	 		break;
 	}
-
-// int[21] GFXSlotsMsg = "GFX Slots: 0000/0000";
-// 	int[21] SNDSlotsMsg = "SND Slots: 0000/0000";
-// 	int[21] MUSSlotsMsg = "MUS Slots: 0000/0000";
-// 	int[26] SPRSlotsMsg = "SPR Slots: 0000/0000/0000";
-// 	int[17] SPRDRWMsg   = "SPR Draws: 0000"; 
-// 	int[11] LOWSPRMsg   = "LOW SPR: 0";
-// 	int[13] CPUUSEMsg   = "CPU USE: 000";
-// 	if(debugInfoStats)
-// 	{
-		
-// 		GFXSlotsMsg[11] = '0' + (GFX_Max/ 1000);
-// 		GFXSlotsMsg[12] = '0' + (GFX_Max % 1000) / 100;
-// 		GFXSlotsMsg[13] = '0' + ((GFX_Max % 1000) % 100) / 10;
-// 		GFXSlotsMsg[14] = '0' + ((GFX_Max % 1000) % 100) % 10;
-
-// 		GFXSlotsMsg[16] = '0' + (CImage_ImageSlotsUsed / 1000);
-// 		GFXSlotsMsg[17] = '0' + (CImage_ImageSlotsUsed % 1000) / 100;
-// 		GFXSlotsMsg[18] = '0' + ((CImage_ImageSlotsUsed % 1000) % 100) / 10;
-// 		GFXSlotsMsg[19] = '0' + ((CImage_ImageSlotsUsed % 1000) % 100) % 10;
-
-
-// 		SNDSlotsMsg[11] = '0' + (SND_Max / 1000);
-// 		SNDSlotsMsg[12] = '0' + (SND_Max % 1000) / 100;
-// 		SNDSlotsMsg[13] = '0' + ((SND_Max % 1000) % 100) / 10;
-// 		SNDSlotsMsg[14] = '0' + ((SND_Max % 1000) % 100) % 10;
-
-// 		SNDSlotsMsg[16] = '0' + (CAudio_SoundSlotsUsed / 1000);
-// 		SNDSlotsMsg[17] = '0' + (CAudio_SoundSlotsUsed % 1000) / 100;
-// 		SNDSlotsMsg[18] = '0' + ((CAudio_SoundSlotsUsed % 1000) % 100) / 10;
-// 		SNDSlotsMsg[19] = '0' + ((CAudio_SoundSlotsUsed % 1000) % 100) % 10;
-
-// 		MUSSlotsMsg[11] = '0' + (MUS_Max  / 1000);
-// 		MUSSlotsMsg[12] = '0' + (MUS_Max % 1000) / 100;
-// 		MUSSlotsMsg[13] = '0' + ((MUS_Max % 1000) % 100) / 10;
-// 		MUSSlotsMsg[14] = '0' + ((MUS_Max % 1000) % 100) % 10;
-
-// 		MUSSlotsMsg[16] = '0' + (CAudio_MusicSlotsUsed / 1000);
-// 		MUSSlotsMsg[17] = '0' + (CAudio_MusicSlotsUsed % 1000) / 100;
-// 		MUSSlotsMsg[18] = '0' + ((CAudio_MusicSlotsUsed % 1000) % 100) / 10;
-// 		MUSSlotsMsg[19] = '0' + ((CAudio_MusicSlotsUsed % 1000) % 100) % 10;
-
-
-// 		SPRSlotsMsg[11] = '0' + (CSprites_spriteMax / 1000);
-// 		SPRSlotsMsg[12] = '0' + (CSprites_spriteMax % 1000) / 100;
-// 		SPRSlotsMsg[13] = '0' + ((CSprites_spriteMax % 1000) % 100) / 10;
-// 		SPRSlotsMsg[14] = '0' + ((CSprites_spriteMax % 1000) % 100) % 10;
-
-// 		SPRSlotsMsg[16] = '0' + (CSprites_MaxSpriteSlotsUsed / 1000);
-// 		SPRSlotsMsg[17] = '0' + (CSprites_MaxSpriteSlotsUsed % 1000) / 100;
-// 		SPRSlotsMsg[18] = '0' + ((CSprites_MaxSpriteSlotsUsed % 1000) % 100) / 10;
-// 		SPRSlotsMsg[19] = '0' + ((CSprites_MaxSpriteSlotsUsed % 1000) % 100) % 10;
-
-// 		SPRSlotsMsg[21] = '0' + (CSprites_SpriteSlotsUsed / 1000);
-// 		SPRSlotsMsg[22] = '0' + (CSprites_SpriteSlotsUsed % 1000) / 100;
-// 		SPRSlotsMsg[23] = '0' + ((CSprites_SpriteSlotsUsed % 1000) % 100) / 10;
-// 		SPRSlotsMsg[24] = '0' + ((CSprites_SpriteSlotsUsed % 1000) % 100) % 10;
-
-		
-// 		SPRDRWMsg[11] = '0' + (CSprites_SpritesDrawn / 1000);
-// 		SPRDRWMsg[12] = '0' + (CSprites_SpritesDrawn % 1000) / 100;
-// 		SPRDRWMsg[13] = '0' + ((CSprites_SpritesDrawn % 1000) % 100) / 10;
-// 		SPRDRWMsg[14] = '0' + ((CSprites_SpritesDrawn % 1000) % 100) % 10;
-
-// 		int cpuused = CpuUsed();
-// 		CPUUSEMsg[9] = '0' + (cpuused / 100);
-// 		CPUUSEMsg[10] = '0' + ((cpuused % 100) / 10);
-// 		CPUUSEMsg[11] = '0' + (((cpuused % 100) % 10));
-
-// 		if(CSprites_notEnoughSpots)
-// 			LOWSPRMsg[9] = 'T';
-// 		else
-// 			LOWSPRMsg[9] = 'F';
-
-// 		PDebugText = DebugTmpText;
-// 		*PDebugText = 0;
-// 		PDebugText = faststrcat(PDebugText, "MEM Use: ");
-// 		itoa(MemoryUsed(), DebugTmpNr, 10);
-// 		PDebugText = faststrcat(PDebugText, DebugTmpNr);
-		
-// 		set_multiply_color(make_color_rgba(255,0,255,255));
-// 		print_at(0,bios_character_height*1,GFXSlotsMsg);
-// 		print_at(0,bios_character_height*2,SNDSlotsMsg);
-// 		print_at(0,bios_character_height*3,MUSSlotsMsg);
-// 		print_at(0,bios_character_height*4,SPRSlotsMsg);
-// 		print_at(0,bios_character_height*5,SPRDRWMsg);
-// 		print_at(0,bios_character_height*6,LOWSPRMsg);
-// 		print_at(0,bios_character_height*7,CPUUSEMsg);
-// 		print_at(0,bios_character_height*8,DebugTmpText);
-			
-// 		set_multiply_color(color_white);
-// 	}
 
 	if(debugInfoStats)
 	{

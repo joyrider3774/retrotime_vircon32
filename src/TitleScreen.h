@@ -225,17 +225,17 @@ void TitleScreen()
 			PText = Text; *PText = 0; PText = faststrcat(PText,
 			"Block Stacker code is heavily inspired on this video from one lone\n"
 			"coder (javidx9) with my own adaptations: https://youtu.be/8OK8_tHeCIA\n"
-	//		"\n"
+
 			"Snakey code is based on an edureka article (by Wajiha Urooj) about making\n"
 			"python snake: https://www.edureka.co/blog/snake-game-with-pygame\n"
-	//		"\n"
+
 			"Brick Breaker ball / block collision uses a detection seen in wireframe\n"
 			"magazine nr 11: https://wireframe.raspberrypi.org\n"
-	//		"\n"
+
 			"Toady water and grass background tiles have been created by me,\n"
 			"Willems Davy aka joyrider3774 feel free to use them. Music is\n"
 			"created, payed and owned by me using Strofe: https://www.strofe.com\n"
-	//		"\n"
+
 			"All other assets (including sound) come from either payed or free\n"
 			"asset packs. For a complete list check the github or itch.io page:\n"
 			"https://github.com/joyrider3774/retrotime_vircon32 or\n"

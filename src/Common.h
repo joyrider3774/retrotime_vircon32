@@ -316,13 +316,14 @@ int ActiveGameGameStateId;
 int RetroCarouselHighScore, RetroCarouselScore;
 int[Games][Modes] HighScores;
 int[Games][Modes] Scores;
+
 int GameState, SubGameState, GameMode, Game;
 float SubStateCounter;
 int MusMenu;
 int SfxConfirm, SfxBack, SfxSelect, SfxScore, SfxOne, SfxTwo, SfxThree, SfxTimeOver, SfxReadyGo, SfxOneMinute;
 float Timer;
 int SubStateTime;
-int GFXFrameID, GFXMedal, GFXPrevewID, GFXPreviewID2;
+int GFXFrameID, GFXOuterFrameID, GFXMedal, GFXPrevewID, GFXPreviewID2;
 int CurrentGameMusicID;
 
 game_signature GameSignature;
@@ -377,11 +378,6 @@ void CGame_AddToScore(int Value)
 	Scores[Game][GameMode] += AScore;
 	if (Scores[Game][GameMode] < 0)
 		Scores[Game][GameMode] = 0;
-}
-
-void CGame_DrawTitleBackground()
-{
-	clear_screen (color_black);
 }
 
 void CGame_LoadHighScoresSettings()

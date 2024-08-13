@@ -238,9 +238,14 @@ Texture* getTextureFromName(int* Name)
 		return newTextureHorz(6, 0, 1, 0, 0, 512, 102, 1.0,1.0);	
 	}
 
+	if (strcmp(Name, "main/outerframe.png") == 0)
+	{
+		return newTextureHorz(6, 1, 1, 0, 922, 512, 102, 1.0,1.0);	
+	}
+
 	if (strcmp(Name, "main/medal.png") == 0)
 	{
-		return newTextureHorz(6, 1, 1, 513, 0, 77, 122, 1.0,1.0);	
+		return newTextureHorz(6, 2, 1, 513, 0, 77, 122, 1.0,1.0);	
 	}
 	
 	if (strcmp(Name, "gamepreview/gamepreview.png") == 0)

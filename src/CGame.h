@@ -56,6 +56,7 @@ void CGame_UnLoadSound()
 void CGame_LoadGraphics()
 {
 	GFXFrameID = CImage_LoadImage("main/frame.png");
+	GFXOuterFrameID = CImage_LoadImage("main/outerframe.png");
 	GFXMedal = CImage_LoadImage("main/medal.png");
 	GFXPrevewID = CImage_LoadImage("gamepreview/gamepreview.png");
 	GFXPreviewID2 = CImage_LoadImage("gamepreview/gamepreview2.png");

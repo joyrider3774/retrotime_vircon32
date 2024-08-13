@@ -263,7 +263,7 @@ void CGame_DeInit()
 
 void CGame_Init()
 {
-	srand(get_time());
+	srand(get_time() + get_date());
 	//srand(0);
 	initDebugSpeed();
 	memset( &GameSignature, 0, sizeof( game_signature ) );

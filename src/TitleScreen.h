@@ -121,12 +121,12 @@ void TitleScreen()
 		GameState -= initDiff;
 	}
 
-	CGame_DrawTitleBackground();
+	CGame_DrawTitleBackground((gamepad_button_l() > 0) && (gamepad_button_r() > 0) && (CurrentMainMenu == -1));
 
 	SDL_Point FramePos = {ScreenWidth / 2, ScreenHeight / 2};
 	//Vec2F FrameScale = {2.5 * xscale, 7.6 *yscale};
 	Vec2F FrameScale = {FrameXScale * xscale, FrameYScale *yscale};
-	CImage_DrawImageFuze(GFXFrameID, 0, true, FramePos.x , FramePos.y, 0, FrameScale.x, FrameScale.y, 1.0, 1.0, 1.0, 0.95);
+	CImage_DrawImageFuze(GFXFrameID, 0, true, FramePos.x , FramePos.y, 0, FrameScale.x, FrameScale.y, 1.0, 1.0, 1.0, 0.90);
 	CImage_DrawImageFuze(GFXOuterFrameID, 0, true, FramePos.x , FramePos.y, 0, FrameScale.x, FrameScale.y, 1.0, 1.0, 1.0, 1.0);
 	
 	TitleScreenAdjustFrameScaleValues();
